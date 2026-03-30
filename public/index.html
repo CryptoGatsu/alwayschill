@@ -13,15 +13,13 @@ body {
   background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
               url('/beach.png') center/cover no-repeat;
   color: white;
-  cursor: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f60e.png') 16 16, auto;
 }
 
 /* HEADER */
 h1 {
   text-align: center;
   margin-top: 60px;
-  font-size: 3.2rem;
-  letter-spacing: 1px;
+  font-size: 3rem;
 }
 
 /* GRID */
@@ -45,15 +43,6 @@ h1 {
   transform: translateY(-6px);
 }
 
-.card h3 {
-  margin-bottom: 10px;
-}
-
-.card p {
-  font-size: 14px;
-  opacity: 0.9;
-}
-
 /* BUTTON */
 .generate-btn {
   position: fixed;
@@ -74,9 +63,8 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   font-weight: bold;
-  transition: all 0.4s ease;
+  transition: 0.4s;
 }
 
 .loading-fill.active {
@@ -84,17 +72,7 @@ h1 {
   color: black;
 }
 
-/* TEXT FADE */
-.fade {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.fade.show {
-  opacity: 1;
-}
-
-/* POPUP */
+/* POPUP (MATCHES GRID) */
 .overlay {
   position: fixed;
   width: 100%;
@@ -110,36 +88,46 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.9);
-  background: rgba(255,255,255,0.9);
-  color: black;
+  background: rgba(0,0,0,0.45);
+  color: white;
   padding: 25px;
-  border-radius: 20px;
-  display: none;
+  border-radius: 16px;
   text-align: center;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px);
+  display: none;
   animation: popIn 0.3s ease forwards;
 }
 
 @keyframes popIn {
-  to {
-    transform: translate(-50%, -50%) scale(1);
-  }
+  to { transform: translate(-50%, -50%) scale(1); }
 }
 
 .popup img {
   max-width: 300px;
   border-radius: 12px;
-  margin-bottom: 10px;
 }
 
 .popup button {
   margin: 5px;
-  padding: 10px 16px;
+  padding: 10px 15px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
-  font-weight: bold;
+}
+
+/* EMOJI EXPLOSION */
+.emoji {
+  position: fixed;
+  font-size: 20px;
+  pointer-events: none;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  to {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
 }
 </style>
 </head>
@@ -149,75 +137,18 @@ h1 {
 <h1>😎 CHILL</h1>
 
 <div class="grid">
-
-  <div class="card">
-    <h3>😎 The Emoji</h3>
-    <p>
-      The 😎 emoji is the internet’s universal signal of confidence,
-      success, and effortless cool. No explanation needed.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🌍 Global Usage</h3>
-    <p>
-      Used millions of times daily across every platform.
-      It transcends language and culture instantly.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🪙 Why Tokenize</h3>
-    <p>
-      It’s already viral. Already understood.
-      Turning 😎 into a token simply gives the vibe ownership.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🧠 Philosophy</h3>
-    <p>
-      No pressure. No roadmap stress.
-      Just chill, build, and let the community decide.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>📦 Supply</h3>
-    <p>
-      1,000,000,000 $CHILL.<br>
-      Fixed supply. No inflation.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🚀 Launch</h3>
-    <p>
-      Fair launch on Pump.fun.<br>
-      No presale. No insiders. Pure vibes.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>💧 Liquidity</h3>
-    <p>
-      Managed by bonding curve.
-      The market decides the flow.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>💸 Taxes</h3>
-    <p>
-      0% buy / 0% sell.<br>
-      Because chill shouldn’t cost extra.
-    </p>
-  </div>
-
+  <div class="card"><h3>😎 The Emoji</h3><p>Universal symbol of cool.</p></div>
+  <div class="card"><h3>🌍 Usage</h3><p>Used globally every second.</p></div>
+  <div class="card"><h3>🪙 Token</h3><p>Turning vibes into value.</p></div>
+  <div class="card"><h3>🧠 Philosophy</h3><p>Just chill.</p></div>
+  <div class="card"><h3>📦 Supply</h3><p>1B fixed supply.</p></div>
+  <div class="card"><h3>🚀 Launch</h3><p>Fair + clean.</p></div>
+  <div class="card"><h3>💧 Liquidity</h3><p>Bonding curve.</p></div>
+  <div class="card"><h3>💸 Taxes</h3><p>0% always.</p></div>
 </div>
 
 <div class="generate-btn" onclick="generatePFP()">
-  <div class="loading-fill fade show" id="loadingFill">Generate 😎</div>
+  <div class="loading-fill" id="loadingFill">Generate 😎</div>
 </div>
 
 <div class="overlay" id="overlay"></div>
@@ -225,7 +156,6 @@ h1 {
 <div class="popup" id="popup">
   <img id="pfpImage">
   <div id="traits"></div>
-
   <button onclick="downloadImage()">Download</button>
   <button onclick="shareImage()">Share</button>
   <button onclick="closePopup()">Close</button>
@@ -235,11 +165,7 @@ h1 {
 
 let isLoading = false;
 
-const chillWords = [
-  "chill","vibing","coolin","zen","relaxed",
-  "tranquilo","relajado","calm","breezy",
-  "気楽","无压力","floating"
-];
+const chillWords = ["chill","vibing","coolin","zen","relaxed","tranquilo"];
 
 function randomTraits() {
   const hats = ["anime hair","gold crown","cyber helmet"];
@@ -253,20 +179,13 @@ function randomTraits() {
   };
 }
 
-/* WORD ANIMATION */
-function startWordCycle() {
+/* WORD LOADER */
+function startCycle() {
   const bar = document.getElementById("loadingFill");
-
   bar.classList.add("active");
 
   return setInterval(()=>{
-    bar.classList.remove("show");
-
-    setTimeout(()=>{
-      bar.innerText = chillWords[Math.floor(Math.random()*chillWords.length)];
-      bar.classList.add("show");
-    },200);
-
+    bar.innerText = chillWords[Math.floor(Math.random()*chillWords.length)];
   },1200);
 }
 
@@ -276,16 +195,14 @@ async function generatePFP() {
   isLoading = true;
 
   const bar = document.getElementById("loadingFill");
-  bar.innerText = "chill...";
-  bar.classList.add("active");
 
-  const cycle = startWordCycle();
+  const cycle = startCycle();
   const traits = randomTraits();
 
   try {
     const res = await fetch("/api/generate", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
       body: JSON.stringify(traits)
     });
 
@@ -297,49 +214,66 @@ async function generatePFP() {
     document.getElementById("pfpImage").src = data.image;
 
     document.getElementById("traits").innerHTML = `
-      <p>Hat: ${traits.hat}</p>
-      <p>Outfit: ${traits.outfit}</p>
-      <p>Background: ${traits.background}</p>
+      <p>${traits.hat}</p>
+      <p>${traits.outfit}</p>
+      <p>${traits.background}</p>
     `;
 
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("popup").style.display = "block";
+    overlay.style.display = "block";
+    popup.style.display = "block";
 
-  } catch (err) {
-    clearInterval(cycle);
+  } catch {
     bar.innerText = "try again 😎";
   }
 
   setTimeout(()=>{
-    bar.classList.remove("active");
     bar.innerText = "Generate 😎";
+    bar.classList.remove("active");
     isLoading = false;
   },1500);
 }
 
 /* CLOSE */
 function closePopup() {
-  document.getElementById("overlay").style.display = "none";
-  document.getElementById("popup").style.display = "none";
+  overlay.style.display = "none";
+  popup.style.display = "none";
 }
 
-document.getElementById("overlay").addEventListener("click", closePopup);
+overlay.onclick = closePopup;
 
 /* DOWNLOAD */
 function downloadImage() {
-  const img = document.getElementById("pfpImage").src;
   const a = document.createElement("a");
-  a.href = img;
+  a.href = pfpImage.src;
   a.download = "chill.png";
   a.click();
 }
 
 /* SHARE */
 function shareImage() {
-  const text = encodeURIComponent("I just made a 😎 CHILL PFP");
-  const url = encodeURIComponent(window.location.href);
-  window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
+  window.open("https://twitter.com/intent/tweet?text=😎 Chill PFP");
 }
+
+/* EMOJI EXPLOSION */
+document.addEventListener("click", (e) => {
+  for (let i = 0; i < 10; i++) {
+    const emoji = document.createElement("div");
+    emoji.className = "emoji";
+    emoji.innerText = "😎";
+
+    const x = (Math.random()-0.5)*200 + "px";
+    const y = (Math.random()-0.5)*200 + "px";
+
+    emoji.style.left = e.clientX + "px";
+    emoji.style.top = e.clientY + "px";
+    emoji.style.setProperty('--x', x);
+    emoji.style.setProperty('--y', y);
+
+    document.body.appendChild(emoji);
+
+    setTimeout(()=>emoji.remove(),1000);
+  }
+});
 
 </script>
 
