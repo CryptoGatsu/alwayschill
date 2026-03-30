@@ -15,14 +15,13 @@ body {
   color: white;
 }
 
-/* HEADER */
 h1 {
   text-align: center;
   margin-top: 60px;
   font-size: 3rem;
 }
 
-/* GRID (UNCHANGED) */
+/* KEEP YOUR ORIGINAL GRID STYLES */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -43,7 +42,7 @@ h1 {
   transform: translateY(-6px);
 }
 
-/* GENERATE BUTTON */
+/* GENERATOR */
 .generate-btn {
   position: fixed;
   bottom: 30px;
@@ -64,7 +63,6 @@ h1 {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  transition: 0.4s;
 }
 
 .loading-fill.active {
@@ -72,7 +70,7 @@ h1 {
   color: black;
 }
 
-/* POPUP (MATCHES CARDS) */
+/* POPUP */
 .overlay {
   position: fixed;
   width: 100%;
@@ -87,7 +85,7 @@ h1 {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
+  transform: translate(-50%, -50%);
   background: rgba(0,0,0,0.45);
   color: white;
   padding: 25px;
@@ -95,11 +93,6 @@ h1 {
   text-align: center;
   backdrop-filter: blur(12px);
   display: none;
-  animation: popIn 0.3s ease forwards;
-}
-
-@keyframes popIn {
-  to { transform: translate(-50%, -50%) scale(1); }
 }
 
 .popup img {
@@ -135,11 +128,8 @@ h1 {
   margin-top: 50px;
   padding: 80px 40px;
   text-align: center;
-
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
               url('/sunset.png') center/cover no-repeat;
-
-  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .chill-grid {
@@ -162,12 +152,6 @@ h1 {
 .chill-box:hover {
   transform: translateY(-6px);
 }
-
-.cta {
-  margin-top: 60px;
-  font-size: 20px;
-  opacity: 0.9;
-}
 </style>
 </head>
 
@@ -175,12 +159,12 @@ h1 {
 
 <h1>😎 CHILL</h1>
 
-<!-- KEEP THIS SECTION EXACTLY THE SAME -->
+<!-- 🔥 YOUR ORIGINAL GRID (DO NOT TOUCH THIS PART) -->
 <div class="grid">
-  <!-- YOUR EXISTING CARDS STAY EXACTLY AS YOU HAVE THEM -->
+  <!-- KEEP EXACTLY YOUR ORIGINAL CARDS HERE -->
 </div>
 
-<!-- GENERATOR BUTTON -->
+<!-- GENERATOR -->
 <div class="generate-btn" onclick="generatePFP()">
   <div class="loading-fill" id="loadingFill">Generate 😎</div>
 </div>
@@ -225,38 +209,17 @@ h1 {
 
   </div>
 
-  <div class="cta">
-    <h3>Don’t think too hard.</h3>
-    <p>Just chill.</p>
-  </div>
-
 </div>
 
 <script>
-
 let isLoading = false;
 
-const chillWords = ["chill","vibing","coolin","zen","relaxed"];
-
 function randomTraits() {
-  const hats = ["anime hair","gold crown","cyber helmet"];
-  const outfits = ["superhero suit","futuristic armor","samurai outfit","NBA jersey"];
-  const backgrounds = ["space","neon city","sunset beach"];
-
   return {
-    hat: hats[Math.floor(Math.random()*hats.length)],
-    outfit: outfits[Math.floor(Math.random()*outfits.length)],
-    background: backgrounds[Math.floor(Math.random()*backgrounds.length)]
+    hat: "anime hair",
+    outfit: "superhero suit",
+    background: "space"
   };
-}
-
-function startCycle() {
-  const bar = document.getElementById("loadingFill");
-  bar.classList.add("active");
-
-  return setInterval(()=>{
-    bar.innerText = chillWords[Math.floor(Math.random()*chillWords.length)];
-  },1200);
 }
 
 async function generatePFP() {
@@ -264,8 +227,9 @@ async function generatePFP() {
   isLoading = true;
 
   const bar = document.getElementById("loadingFill");
+  bar.classList.add("active");
+  bar.innerText = "chill...";
 
-  const cycle = startCycle();
   const traits = randomTraits();
 
   try {
@@ -277,17 +241,9 @@ async function generatePFP() {
 
     const data = await res.json();
 
-    clearInterval(cycle);
     bar.innerText = "DONE 😎";
 
     document.getElementById("pfpImage").src = data.image;
-
-    document.getElementById("traits").innerHTML = `
-      <p>${traits.hat}</p>
-      <p>${traits.outfit}</p>
-      <p>${traits.background}</p>
-    `;
-
     overlay.style.display = "block";
     popup.style.display = "block";
 
@@ -320,9 +276,8 @@ function shareImage() {
   window.open("https://twitter.com/intent/tweet?text=😎 Chill PFP");
 }
 
-/* EMOJI EXPLOSION */
 document.addEventListener("click", (e) => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 8; i++) {
     const emoji = document.createElement("div");
     emoji.className = "emoji";
     emoji.innerText = "😎";
@@ -336,11 +291,9 @@ document.addEventListener("click", (e) => {
     emoji.style.setProperty('--y', y);
 
     document.body.appendChild(emoji);
-
     setTimeout(()=>emoji.remove(),1000);
   }
 });
-
 </script>
 
 </body>
