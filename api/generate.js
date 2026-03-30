@@ -8,20 +8,21 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "gpt-image-1",
-        prompt: "Front-facing centered 3D emoji with sunglasses, identical pose and lighting, random outfit, random background, ultra HD",
+        prompt: "Front-facing centered 3D emoji with sunglasses, identical pose, random outfit and background, ultra HD",
         size: "512x512"
       })
     });
 
     const data = await response.json();
 
-    if (!data.data) {
-      throw new Error("Image generation failed");
+    if (!data.data || !data.data[0]) {
+      throw new Error("No image returned");
     }
 
     res.status(200).json({ image: data.data[0].url });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 }
