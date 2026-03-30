@@ -1,88 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>😎 CHILL</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>😎 CHILL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: white;
-      background: linear-gradient(to bottom, #4facfe, #00f2fe);
-      overflow-x: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: linear-gradient(to bottom, #4facfe, #00f2fe);
+}
 
-    .hero {
-      height: 100vh;
-      background: url('/beach.jpg') center/cover no-repeat;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
+/* HERO */
+.hero {
+  height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+    url('/beach.png') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-    h1 {
-      font-size: 4rem;
-      margin: 0;
-    }
+h1 {
+  font-size: 4rem;
+}
 
-    p {
-      max-width: 600px;
-      margin: 10px auto;
-    }
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 40px;
+}
 
-    .section {
-      padding: 60px 20px;
-      text-align: center;
-    }
+.card {
+  background: rgba(0,0,0,0.35);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.2s;
+}
 
-    .card {
-      background: rgba(0,0,0,0.3);
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-      border-radius: 12px;
-      transition: transform 0.2s ease;
-    }
+.card:hover {
+  transform: scale(1.05);
+}
 
-    .card:hover {
-      transform: scale(1.05);
-    }
+/* BUTTON */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: black;
+  color: white;
+  cursor: pointer;
+}
 
-    button {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 10px;
-      background: #111;
-      color: white;
-      cursor: pointer;
-      font-size: 1rem;
-    }
+/* EMOJI RAIN */
+.emoji {
+  position: fixed;
+  top: -50px;
+  font-size: 2rem;
+  animation: fall linear forwards;
+}
 
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
-
-    /* Emoji Rain */
-    .emoji {
-      position: fixed;
-      top: -50px;
-      font-size: 2rem;
-      animation: fall linear forwards;
-      pointer-events: none;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-      }
-    }
-  </style>
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+</style>
 </head>
 
 <body>
@@ -90,144 +80,88 @@
 <!-- HERO -->
 <div class="hero">
   <h1>😎 CHILL</h1>
-  <p>The only emoji that made it. The rest are trying too hard.</p>
-  <button onclick="rainEmojis()">CLICK ME 😎</button>
+  <p>not trying. still winning.</p>
+  <button onclick="rainEmojis()">tap 😎</button>
 </div>
 
-<!-- WHY -->
-<div class="section">
-  <h2>Why 😎?</h2>
+<!-- GRID SECTION -->
+<div class="grid">
+
   <div class="card">
-    <p>
-      😎 is confidence. 😎 is effortless. 😎 is “I already won but I’m not gonna say it.”
-      <br/><br/>
-      It’s one of the most used emojis on earth.
-      Not because it tries… but because it doesn’t have to.
-    </p>
+    <h3>Why 😎</h3>
+    <p>top tier emoji. zero effort. max aura.</p>
   </div>
-</div>
 
-<!-- TOKENIZE -->
-<div class="section">
-  <h2>Why Tokenize It?</h2>
   <div class="card">
-    <p>
-      Every meme coin is chasing attention.
-      😎 already has it.
-      <br/><br/>
-      Universal meaning. Recognizable instantly.
-      Works in every language, every culture, every timeline.
-      <br/><br/>
-      This isn’t just a token.
-      It’s a vibe.
-    </p>
+    <h3>Usage</h3>
+    <p>millions per day. globally understood flex.</p>
   </div>
-</div>
 
-<!-- TOKENOMICS -->
-<div class="section">
-  <h2>Tokenomics 😎</h2>
+  <div class="card">
+    <h3>Token</h3>
+    <p>already viral. we just made it tradable.</p>
+  </div>
+
+  <div class="card">
+    <h3>Vibe</h3>
+    <p>no stress. no roadmap. just 😎</p>
+  </div>
 
   <div class="card">
     <h3>Supply</h3>
-    <p>1,000,000,000 $CHILL</p>
+    <p>1B $CHILL</p>
   </div>
 
   <div class="card">
     <h3>Launch</h3>
-    <p>100% Fair Launch on Pump.fun</p>
-  </div>
-
-  <div class="card">
-    <h3>Distribution</h3>
-    <p>
-      100% Public<br/>
-      0% Team<br/>
-      0% Presale<br/>
-      0% VC
-    </p>
+    <p>fair launch. no insiders.</p>
   </div>
 
   <div class="card">
     <h3>Liquidity</h3>
-    <p>
-      Bonding curve does its thing.<br/>
-      Liquidity gets added automatically.<br/>
-      Nobody gets special treatment.
-    </p>
+    <p>bonding curve handles it.</p>
   </div>
 
   <div class="card">
     <h3>Taxes</h3>
-    <p>0% buy / 0% sell (because we’re not weird)</p>
+    <p>0% because we’re chill</p>
   </div>
 
-  <div class="card">
-    <h3>Roadmap</h3>
-    <p>
-      There isn’t one.<br/>
-      We’re just gonna vibe and see what happens 😎
-    </p>
-  </div>
 </div>
 
 <!-- PFP -->
-<div class="section">
+<div style="text-align:center; padding:40px;">
   <h2>PFP Generator</h2>
   <button onclick="generatePFP()">Generate 😎</button>
-  <p id="pfpPrompt"></p>
-</div>
-
-<!-- CULTURE -->
-<div class="section">
-  <h2>Crypto Culture</h2>
-  <div class="card">
-    <p>
-      Tech billionaires, crypto degens, and random internet legends
-      all agree on one thing:
-      <br/><br/>
-      😎 = winning
-    </p>
-  </div>
+  <br/><br/>
+  <img id="pfpImage" style="max-width:300px; border-radius:12px;" />
 </div>
 
 <!-- COMMUNITY -->
-<div class="section">
-  <h2>Join the Chill Community</h2>
-  <iframe src="https://x.com/i/communities/2038577284320489664"></iframe>
+<div style="padding:40px;">
+  <h2 style="text-align:center;">Community</h2>
+  <iframe src="https://x.com/i/communities/2038577284320489664"
+    style="width:100%; height:600px; border:none;"></iframe>
 </div>
 
 <script>
-function generatePFP() {
-  const prompt = `
-Front-facing centered 3D emoji with identical pose and lighting.
-Keep sunglasses and expression consistent.
-
-Randomize:
-- Hair or hat
-- Outfit
-- Background
-
-Ultra HD, glossy, Pixar-quality render.
-  `;
-  document.getElementById("pfpPrompt").innerText = prompt;
-}
-
 function rainEmojis() {
   for (let i = 0; i < 40; i++) {
-    const emoji = document.createElement("div");
-    emoji.classList.add("emoji");
-    emoji.innerText = "😎";
-
-    emoji.style.left = Math.random() * 100 + "vw";
-    emoji.style.animationDuration = (Math.random() * 2 + 3) + "s";
-
-    document.body.appendChild(emoji);
-
-    setTimeout(() => {
-      emoji.remove();
-    }, 5000);
+    const e = document.createElement("div");
+    e.className = "emoji";
+    e.innerText = "😎";
+    e.style.left = Math.random() * 100 + "vw";
+    e.style.animationDuration = (Math.random()*2+3)+"s";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),5000);
   }
+}
+
+/* CALLS BACKEND (NOT OPENAI DIRECTLY) */
+async function generatePFP() {
+  const res = await fetch("/api/generate");
+  const data = await res.json();
+  document.getElementById("pfpImage").src = data.image;
 }
 </script>
 
