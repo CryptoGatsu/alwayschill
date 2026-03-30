@@ -3,140 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <title>😎 CHILL</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  color: white;
+  font-family: 'Fredoka', sans-serif;
   background: linear-gradient(to bottom, #4facfe, #00f2fe);
+  cursor: url('https://twemoji.maxcdn.com/v/latest/72x72/1f60e.png'), auto;
 }
 
-/* HERO */
-.hero {
-  height: 100vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-    url('/beach.png') center/cover no-repeat;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-h1 { font-size: 4rem; }
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  padding: 40px;
-}
-
-.card {
-  background: rgba(0,0,0,0.35);
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-/* BUTTON */
-button {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 10px;
+/* FLOATING BUTTON */
+.generate-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
   background: black;
   color: white;
+  padding: 20px;
+  border-radius: 50px;
   cursor: pointer;
-  margin: 5px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  transition: 0.3s;
 }
 
-/* IMAGE */
-#pfpImage {
+.generate-btn:hover {
+  transform: scale(1.1);
+}
+
+/* LOADING INSIDE BUTTON */
+.loading-text {
+  font-size: 14px;
+}
+
+/* POPUP */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 20px;
+  display: none;
+  text-align: center;
+  z-index: 1000;
+}
+
+.popup img {
   max-width: 300px;
   border-radius: 12px;
-  margin-top: 20px;
-  transition: opacity 0.3s;
 }
 
-/* EMOJI RAIN */
-.emoji {
+/* BACKDROP */
+.overlay {
   position: fixed;
-  top: -50px;
-  font-size: 2rem;
-  animation: fall linear forwards;
-}
-
-@keyframes fall {
-  to { transform: translateY(110vh); }
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  top: 0;
+  left: 0;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>😎 CHILL</h1>
-  <p>not trying. still winning.</p>
-  <button onclick="rainEmojis()">tap 😎</button>
+<h1 style="text-align:center; margin-top:100px;">😎 CHILL</h1>
+
+<!-- FLOATING BUTTON -->
+<div class="generate-btn" onclick="generatePFP()" id="genBtn">
+  <span id="btnText">Generate 😎</span>
 </div>
 
-<!-- GRID -->
-<div class="grid">
-  <div class="card"><h3>Why 😎</h3><p>effortless dominance</p></div>
-  <div class="card"><h3>Usage</h3><p>millions daily</p></div>
-  <div class="card"><h3>Token</h3><p>already viral</p></div>
-  <div class="card"><h3>Vibe</h3><p>just chill</p></div>
-  <div class="card"><h3>Supply</h3><p>1B $CHILL</p></div>
-  <div class="card"><h3>Launch</h3><p>fair launch</p></div>
-  <div class="card"><h3>Liquidity</h3><p>bonding curve</p></div>
-  <div class="card"><h3>Taxes</h3><p>0%</p></div>
-</div>
+<!-- POPUP -->
+<div class="overlay" id="overlay"></div>
 
-<!-- GENERATOR -->
-<div style="text-align:center; padding:40px;">
-  <h2>PFP Generator 😎</h2>
-
-  <button onclick="generatePFP()">Generate</button>
-  <button onclick="downloadImage()">Download</button>
-
-  <p id="status"></p>
-
-  <img id="pfpImage" />
-
+<div class="popup" id="popup">
+  <img id="pfpImage">
   <div id="traits"></div>
-</div>
-
-<!-- COMMUNITY -->
-<div style="padding:40px;">
-  <h2 style="text-align:center;">Community</h2>
-  <iframe src="https://x.com/i/communities/2038577284320489664"
-    style="width:100%; height:600px; border:none;"></iframe>
+  <button onclick="downloadImage()">Download</button>
 </div>
 
 <script>
 
-/* EMOJI RAIN */
-function rainEmojis() {
-  for (let i = 0; i < 40; i++) {
-    const e = document.createElement("div");
-    e.className = "emoji";
-    e.innerText = "😎";
-    e.style.left = Math.random() * 100 + "vw";
-    e.style.animationDuration = (Math.random()*2+3)+"s";
-    document.body.appendChild(e);
-    setTimeout(()=>e.remove(),5000);
-  }
-}
-
-/* TRAITS */
 function randomTraits() {
-  const hats = ["cap", "crown", "none", "helmet"];
-  const outfits = ["hoodie", "armor", "suit", "beachwear"];
-  const backgrounds = ["sunset", "neon", "ocean", "space"];
+  const hats = ["gold crown", "anime hair", "cyber helmet"];
+  const outfits = [
+    "anime streetwear",
+    "futuristic armor",
+    "fantasy knight",
+    "NBA jersey",
+    "superhero suit"
+  ];
+  const backgrounds = ["neon city", "space", "sunset beach"];
 
   return {
     hat: hats[Math.floor(Math.random()*hats.length)],
@@ -145,56 +108,47 @@ function randomTraits() {
   };
 }
 
-/* GENERATE */
 async function generatePFP() {
-  const status = document.getElementById("status");
-  const img = document.getElementById("pfpImage");
-  const traitsDiv = document.getElementById("traits");
+  const btn = document.getElementById("btnText");
 
-  status.innerText = "Generating...";
-  img.style.opacity = 0.3;
+  btn.innerText = "CHILL...";
 
   const traits = randomTraits();
 
   try {
-    const res = await fetch("/api/generate");
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(traits)
+    });
+
     const data = await res.json();
 
-    if (data.error) {
-      status.innerText = "Error: " + data.error;
-      console.log(data);
-      return;
-    }
+    document.getElementById("pfpImage").src = data.image;
 
-    img.src = data.image;
-    img.style.opacity = 1;
-
-    status.innerText = "Done 😎";
-
-    traitsDiv.innerHTML = `
+    document.getElementById("traits").innerHTML = `
       <p>Hat: ${traits.hat}</p>
       <p>Outfit: ${traits.outfit}</p>
       <p>Background: ${traits.background}</p>
     `;
 
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup").style.display = "block";
+
+    btn.innerText = "Generate 😎";
+
   } catch (err) {
-    status.innerText = "Something broke";
-    console.error(err);
+    btn.innerText = "Error";
   }
 }
 
-/* DOWNLOAD */
 function downloadImage() {
   const img = document.getElementById("pfpImage").src;
-
-  if (!img) {
-    alert("Generate first 😎");
-    return;
-  }
-
   const a = document.createElement("a");
   a.href = img;
-  a.download = "chill-pfp.png";
+  a.download = "chill.png";
   a.click();
 }
 
