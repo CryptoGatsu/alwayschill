@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CHILL Admin</title>
+<style>
+body { font-family: sans-serif; padding: 40px; }
+input { display:block; margin:10px 0; width:300px; }
+button { padding:10px; }
+</style>
+</head>
+
+<body>
+
+<h2>Update Links</h2>
+
+<input id="pumpfun" placeholder="Pump.fun link">
+<input id="dex" placeholder="Dexscreener link">
+<input id="contract" placeholder="Contract address">
+<input id="password" placeholder="Admin password">
+
+<button onclick="save()">Save</button>
+
+<script>
+async function save() {
+  await fetch("/api/config", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      pumpfun: pumpfun.value,
+      dexscreener: dex.value,
+      contract: contract.value,
+      password: password.value
+    })
+  });
+
+  alert("Updated 😎");
+}
+</script>
+
+</body>
+</html>

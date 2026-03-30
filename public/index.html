@@ -269,10 +269,26 @@ Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • 
   <h2>Join the Chill Movement 😎</h2>
 
   <div class="chill-grid">
-    <div class="card"><h3>🪙 Buy</h3><p>Start your journey. Early vibes only.</p></div>
-    <div class="card"><h3>📊 Chart</h3><p>Track the movement. Watch the chill grow.</p></div>
-    <div class="card"><h3>🐦 Community</h3><p>Join the conversation. Stay updated.</p></div>
-  </div>
+
+  <a id="buyBtn" href="#" class="chill-box">
+    <h3>🪙 Buy</h3>
+    <p>Start your journey. Early vibes only.</p>
+  </a>
+
+  <a id="chartBtn" href="#" class="chill-box">
+    <h3>📊 Chart</h3>
+    <p>Track the movement. Watch the chill grow.</p>
+  </a>
+
+  <a href="https://x.com/i/communities/2038577284320489664" target="_blank" class="chill-box">
+    <h3>🐦 Community</h3>
+    <p>Join the squad. Stay updated.</p>
+  </a>
+
+</div>
+
+<!-- CONTRACT DISPLAY -->
+<p id="contractText" style="margin-top:20px; opacity:0.8;"></p>
 
   <h3 style="margin-top:60px;">Latest Chill Creations 😎</h3>
   <div class="pfp-grid" id="pfpGrid"></div>
@@ -386,5 +402,19 @@ function shareImage() {
 
 // CLICK OUTSIDE CLOSE (FINAL FIX)
 overlay.onclick = closePopup;
+
+async function loadConfig() {
+  const res = await fetch("/api/config");
+  const data = await res.json();
+
+  // Update buttons
+  document.getElementById("buyBtn").href = data.pumpfun;
+  document.getElementById("chartBtn").href = data.dexscreener;
+
+  // Show contract
+  document.getElementById("contractText").innerText = data.contract;
+}
+
+loadConfig();
 
 </script>
