@@ -115,10 +115,29 @@ h1 {
               url('/sunset.png') center/cover no-repeat;
 }
 
-.chill-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
+.chill-box {
+  background: rgba(0,0,0,0.45);
+  padding: 25px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: white;
+  backdrop-filter: blur(10px);
+  transition: 0.25s;
+  display: block;
+}
+
+.chill-box h3 {
+  margin-bottom: 10px;
+}
+
+.chill-box p {
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+.chill-box:hover {
+  transform: translateY(-6px);
+  background: rgba(0,0,0,0.6);
 }
 
 .contract-box {
@@ -309,21 +328,21 @@ Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • 
 
   <h2>Join the Chill Movement 😎</h2>
 
-  <div class="chill-grid">
+<div class="chill-grid">
 
   <a id="buyBtn" href="#" class="chill-box">
     <h3>🪙 Buy</h3>
-    <p>Start your journey. Early vibes only.</p>
+    <p>Start your journey. Early vibes only. Enter before the crowd catches on.</p>
   </a>
 
   <a id="chartBtn" href="#" class="chill-box">
     <h3>📊 Chart</h3>
-    <p>Track the movement. Watch the chill grow.</p>
+    <p>Track the movement in real time. Watch the chill rise and fall.</p>
   </a>
 
   <a href="https://x.com/i/communities/2038577284320489664" target="_blank" class="chill-box">
     <h3>🐦 Community</h3>
-    <p>Join the squad. Stay updated.</p>
+    <p>Join the squad. Stay updated. Share the vibe.</p>
   </a>
 
 </div>
