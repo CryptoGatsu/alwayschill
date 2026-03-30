@@ -71,6 +71,9 @@ h1 {
   text-align: center;
   backdrop-filter: blur(10px);
   transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card:hover { transform: translateY(-6px); }
@@ -78,6 +81,7 @@ h1 {
 .card-btn {
   display: inline-block;
   margin-top: 15px;
+  margin: 20px auto 0 auto; /* centers horizontally */
   padding: 10px 16px;
   border-radius: 12px;
   text-decoration: none;
@@ -327,10 +331,9 @@ Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • 
 </div>
 
 <!-- CONTRACT DISPLAY -->
-<div class="contract-box">
-  <span id="contractText">Contract: loading...</span>
-  <button onclick="copyContract()">Copy</button>
-</div>
+<p style="margin-top:20px; opacity:0.8;">
+  Contract: <span id="contractText">TBA</span>
+</p>
 
 <div id="toast">Copied 😎</div>
 
