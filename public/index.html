@@ -25,9 +25,7 @@ body {
   align-items: center;
 }
 
-h1 {
-  font-size: 4rem;
-}
+h1 { font-size: 4rem; }
 
 /* GRID */
 .grid {
@@ -42,21 +40,25 @@ h1 {
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  transition: transform 0.2s;
-}
-
-.card:hover {
-  transform: scale(1.05);
 }
 
 /* BUTTON */
 button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
   border-radius: 10px;
   background: black;
   color: white;
   cursor: pointer;
+  margin: 5px;
+}
+
+/* IMAGE */
+#pfpImage {
+  max-width: 300px;
+  border-radius: 12px;
+  margin-top: 20px;
+  transition: opacity 0.3s;
 }
 
 /* EMOJI RAIN */
@@ -68,9 +70,7 @@ button {
 }
 
 @keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
+  to { transform: translateY(110vh); }
 }
 </style>
 </head>
@@ -84,57 +84,30 @@ button {
   <button onclick="rainEmojis()">tap 😎</button>
 </div>
 
-<!-- GRID SECTION -->
+<!-- GRID -->
 <div class="grid">
-
-  <div class="card">
-    <h3>Why 😎</h3>
-    <p>top tier emoji. zero effort. max aura.</p>
-  </div>
-
-  <div class="card">
-    <h3>Usage</h3>
-    <p>millions per day. globally understood flex.</p>
-  </div>
-
-  <div class="card">
-    <h3>Token</h3>
-    <p>already viral. we just made it tradable.</p>
-  </div>
-
-  <div class="card">
-    <h3>Vibe</h3>
-    <p>no stress. no roadmap. just 😎</p>
-  </div>
-
-  <div class="card">
-    <h3>Supply</h3>
-    <p>1B $CHILL</p>
-  </div>
-
-  <div class="card">
-    <h3>Launch</h3>
-    <p>fair launch. no insiders.</p>
-  </div>
-
-  <div class="card">
-    <h3>Liquidity</h3>
-    <p>bonding curve handles it.</p>
-  </div>
-
-  <div class="card">
-    <h3>Taxes</h3>
-    <p>0% because we’re chill</p>
-  </div>
-
+  <div class="card"><h3>Why 😎</h3><p>effortless dominance</p></div>
+  <div class="card"><h3>Usage</h3><p>millions daily</p></div>
+  <div class="card"><h3>Token</h3><p>already viral</p></div>
+  <div class="card"><h3>Vibe</h3><p>just chill</p></div>
+  <div class="card"><h3>Supply</h3><p>1B $CHILL</p></div>
+  <div class="card"><h3>Launch</h3><p>fair launch</p></div>
+  <div class="card"><h3>Liquidity</h3><p>bonding curve</p></div>
+  <div class="card"><h3>Taxes</h3><p>0%</p></div>
 </div>
 
-<!-- PFP -->
+<!-- GENERATOR -->
 <div style="text-align:center; padding:40px;">
-  <h2>PFP Generator</h2>
-  <button onclick="generatePFP()">Generate 😎</button>
-  <br/><br/>
-  <img id="pfpImage" style="max-width:300px; border-radius:12px;" />
+  <h2>PFP Generator 😎</h2>
+
+  <button onclick="generatePFP()">Generate</button>
+  <button onclick="downloadImage()">Download</button>
+
+  <p id="status"></p>
+
+  <img id="pfpImage" />
+
+  <div id="traits"></div>
 </div>
 
 <!-- COMMUNITY -->
@@ -145,6 +118,8 @@ button {
 </div>
 
 <script>
+
+/* EMOJI RAIN */
 function rainEmojis() {
   for (let i = 0; i < 40; i++) {
     const e = document.createElement("div");
@@ -157,12 +132,72 @@ function rainEmojis() {
   }
 }
 
-/* CALLS BACKEND (NOT OPENAI DIRECTLY) */
-async function generatePFP() {
-  const res = await fetch("/api/generate");
-  const data = await res.json();
-  document.getElementById("pfpImage").src = data.image;
+/* TRAITS */
+function randomTraits() {
+  const hats = ["cap", "crown", "none", "helmet"];
+  const outfits = ["hoodie", "armor", "suit", "beachwear"];
+  const backgrounds = ["sunset", "neon", "ocean", "space"];
+
+  return {
+    hat: hats[Math.floor(Math.random()*hats.length)],
+    outfit: outfits[Math.floor(Math.random()*outfits.length)],
+    background: backgrounds[Math.floor(Math.random()*backgrounds.length)]
+  };
 }
+
+/* GENERATE */
+async function generatePFP() {
+  const status = document.getElementById("status");
+  const img = document.getElementById("pfpImage");
+  const traitsDiv = document.getElementById("traits");
+
+  status.innerText = "Generating...";
+  img.style.opacity = 0.3;
+
+  const traits = randomTraits();
+
+  try {
+    const res = await fetch("/api/generate");
+    const data = await res.json();
+
+    if (data.error) {
+      status.innerText = "Error: " + data.error;
+      console.log(data);
+      return;
+    }
+
+    img.src = data.image;
+    img.style.opacity = 1;
+
+    status.innerText = "Done 😎";
+
+    traitsDiv.innerHTML = `
+      <p>Hat: ${traits.hat}</p>
+      <p>Outfit: ${traits.outfit}</p>
+      <p>Background: ${traits.background}</p>
+    `;
+
+  } catch (err) {
+    status.innerText = "Something broke";
+    console.error(err);
+  }
+}
+
+/* DOWNLOAD */
+function downloadImage() {
+  const img = document.getElementById("pfpImage").src;
+
+  if (!img) {
+    alert("Generate first 😎");
+    return;
+  }
+
+  const a = document.createElement("a");
+  a.href = img;
+  a.download = "chill-pfp.png";
+  a.click();
+}
+
 </script>
 
 </body>
