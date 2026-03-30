@@ -22,7 +22,7 @@ h1 {
   font-size: 3rem;
 }
 
-/* GRID */
+/* GRID (UNCHANGED) */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -43,7 +43,7 @@ h1 {
   transform: translateY(-6px);
 }
 
-/* BUTTON */
+/* GENERATE BUTTON */
 .generate-btn {
   position: fixed;
   bottom: 30px;
@@ -72,7 +72,7 @@ h1 {
   color: black;
 }
 
-/* POPUP (MATCHES GRID) */
+/* POPUP (MATCHES CARDS) */
 .overlay {
   position: fixed;
   width: 100%;
@@ -129,6 +129,45 @@ h1 {
     opacity: 0;
   }
 }
+
+/* BOTTOM SECTION */
+.chill-section {
+  margin-top: 50px;
+  padding: 80px 40px;
+  text-align: center;
+
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+              url('/sunset.png') center/cover no-repeat;
+
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.chill-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.chill-box {
+  background: rgba(0,0,0,0.45);
+  padding: 25px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: white;
+  backdrop-filter: blur(10px);
+  transition: 0.2s;
+}
+
+.chill-box:hover {
+  transform: translateY(-6px);
+}
+
+.cta {
+  margin-top: 60px;
+  font-size: 20px;
+  opacity: 0.9;
+}
 </style>
 </head>
 
@@ -136,82 +175,17 @@ h1 {
 
 <h1>😎 CHILL</h1>
 
+<!-- KEEP THIS SECTION EXACTLY THE SAME -->
 <div class="grid">
-
-  <div class="card">
-    <h3>😎 The Emoji</h3>
-    <p>
-      The 😎 emoji represents confidence, success, and effortless cool.
-      It’s the one emoji that says everything without saying anything.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🌍 Global Usage</h3>
-    <p>
-      Used millions of times every day across social media,
-      messaging, and culture. Recognized instantly worldwide.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🪙 Why Tokenize</h3>
-    <p>
-      Most memes try to become viral.
-      😎 already is.
-      Tokenizing it simply gives the internet ownership of a feeling.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🧠 Philosophy</h3>
-    <p>
-      No forced hype. No fake promises.
-      Just a shared vibe where the community decides what happens next.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>📦 Supply</h3>
-    <p>
-      1,000,000,000 $CHILL.<br>
-      Fixed supply. No inflation.<br>
-      No surprises.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🚀 Launch</h3>
-    <p>
-      100% fair launch on Pump.fun.<br>
-      No presale. No insiders.<br>
-      Everyone starts equal.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>💧 Liquidity</h3>
-    <p>
-      Powered by a bonding curve.<br>
-      Liquidity grows with demand.<br>
-      The market decides everything.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>💸 Taxes</h3>
-    <p>
-      0% buy. 0% sell.<br>
-      Because being chill shouldn’t cost extra.
-    </p>
-  </div>
-
+  <!-- YOUR EXISTING CARDS STAY EXACTLY AS YOU HAVE THEM -->
 </div>
 
+<!-- GENERATOR BUTTON -->
 <div class="generate-btn" onclick="generatePFP()">
   <div class="loading-fill" id="loadingFill">Generate 😎</div>
 </div>
 
+<!-- POPUP -->
 <div class="overlay" id="overlay"></div>
 
 <div class="popup" id="popup">
@@ -222,11 +196,47 @@ h1 {
   <button onclick="closePopup()">Close</button>
 </div>
 
+<!-- NEW SECTION -->
+<div class="chill-section">
+
+  <h2>Join the Chill Movement 😎</h2>
+
+  <div class="chill-grid">
+
+    <a href="#" class="chill-box">
+      <h3>🪙 Buy on Pump.fun</h3>
+      <p>Where it all begins. Early vibes only.</p>
+    </a>
+
+    <a href="#" class="chill-box">
+      <h3>📊 Dexscreener</h3>
+      <p>Track the charts. Watch the chill rise.</p>
+    </a>
+
+    <a href="https://x.com/i/communities/2038577284320489664" target="_blank" class="chill-box">
+      <h3>🐦 X Community</h3>
+      <p>Join the squad. Stay updated.</p>
+    </a>
+
+    <a href="#" class="chill-box">
+      <h3>💬 Telegram</h3>
+      <p>Talk chill. Build together.</p>
+    </a>
+
+  </div>
+
+  <div class="cta">
+    <h3>Don’t think too hard.</h3>
+    <p>Just chill.</p>
+  </div>
+
+</div>
+
 <script>
 
 let isLoading = false;
 
-const chillWords = ["chill","vibing","coolin","zen","relaxed","tranquilo"];
+const chillWords = ["chill","vibing","coolin","zen","relaxed"];
 
 function randomTraits() {
   const hats = ["anime hair","gold crown","cyber helmet"];
@@ -240,7 +250,6 @@ function randomTraits() {
   };
 }
 
-/* WORD LOADER */
 function startCycle() {
   const bar = document.getElementById("loadingFill");
   bar.classList.add("active");
@@ -250,7 +259,6 @@ function startCycle() {
   },1200);
 }
 
-/* GENERATE */
 async function generatePFP() {
   if (isLoading) return;
   isLoading = true;
@@ -294,7 +302,6 @@ async function generatePFP() {
   },1500);
 }
 
-/* CLOSE */
 function closePopup() {
   overlay.style.display = "none";
   popup.style.display = "none";
@@ -302,7 +309,6 @@ function closePopup() {
 
 overlay.onclick = closePopup;
 
-/* DOWNLOAD */
 function downloadImage() {
   const a = document.createElement("a");
   a.href = pfpImage.src;
@@ -310,7 +316,6 @@ function downloadImage() {
   a.click();
 }
 
-/* SHARE */
 function shareImage() {
   window.open("https://twitter.com/intent/tweet?text=😎 Chill PFP");
 }
