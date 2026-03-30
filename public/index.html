@@ -13,7 +13,7 @@ body {
   background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
               url('/beach.png') center/cover no-repeat;
   color: white;
-  cursor: url('https://twemoji.maxcdn.com/v/latest/72x72/1f60e.png'), auto;
+  cursor: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f60e.png') 16 16, auto;
 }
 
 /* HEADER */
@@ -38,29 +38,27 @@ h1 {
   text-align: center;
 }
 
-/* FLOATING BUTTON */
+/* FLOAT BUTTON */
 .generate-btn {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 160px;
-  height: 50px;
-  background: black;
-  border-radius: 25px;
+  width: 170px;
+  height: 55px;
+  border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  background: black;
+  box-shadow: 0 0 25px rgba(0,0,0,0.7);
   cursor: pointer;
 }
 
-/* LOADING BAR */
 .loading-fill {
-  height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #00f2fe, #4facfe);
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  background: linear-gradient(90deg,#00f2fe,#4facfe);
   color: black;
   font-weight: bold;
 }
@@ -82,7 +80,7 @@ h1 {
   transform: translate(-50%, -50%);
   background: white;
   color: black;
-  padding: 20px;
+  padding: 25px;
   border-radius: 20px;
   display: none;
   text-align: center;
@@ -91,6 +89,14 @@ h1 {
 .popup img {
   max-width: 300px;
   border-radius: 12px;
+}
+
+.popup button {
+  margin: 5px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -101,75 +107,17 @@ h1 {
 
 <!-- GRID -->
 <div class="grid">
-
-  <div class="card">
-    <h3>😎 Why Chill</h3>
-    <p>
-      The 😎 emoji is the internet’s universal signal of winning.
-      No words needed. Just vibes.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🌍 Usage</h3>
-    <p>
-      Used millions of times daily across every platform.
-      Recognized globally. Effortlessly iconic.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🪙 Token</h3>
-    <p>
-      Already viral. Already understood.
-      Tokenizing 😎 just makes it tradable.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🧠 Vibe</h3>
-    <p>
-      No stress. No roadmap.
-      Just chill and see what happens.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>📦 Supply</h3>
-    <p>
-      1,000,000,000 $CHILL<br>
-      No inflation. No surprises.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>🚀 Launch</h3>
-    <p>
-      100% fair launch.<br>
-      No presale. No insiders.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>💧 Liquidity</h3>
-    <p>
-      Bonding curve handles everything.<br>
-      Community owns the outcome.
-    </p>
-  </div>
-
-  <div class="card">
-    <h3>💸 Taxes</h3>
-    <p>
-      0% buy / 0% sell<br>
-      Because we’re not weird.
-    </p>
-  </div>
-
+  <div class="card"><h3>😎 Why Chill</h3><p>Universal symbol of effortless winning.</p></div>
+  <div class="card"><h3>🌍 Usage</h3><p>Millions daily. Global vibe.</p></div>
+  <div class="card"><h3>🪙 Token</h3><p>Already viral. Now tradable.</p></div>
+  <div class="card"><h3>🧠 Vibe</h3><p>No roadmap. Just chill.</p></div>
+  <div class="card"><h3>📦 Supply</h3><p>1B $CHILL</p></div>
+  <div class="card"><h3>🚀 Launch</h3><p>Fair launch. No insiders.</p></div>
+  <div class="card"><h3>💧 Liquidity</h3><p>Bonding curve.</p></div>
+  <div class="card"><h3>💸 Taxes</h3><p>0% always.</p></div>
 </div>
 
-
-<!-- BUTTON -->
+<!-- GENERATE BUTTON -->
 <div class="generate-btn" onclick="generatePFP()">
   <div class="loading-fill" id="loadingFill">Generate 😎</div>
 </div>
@@ -180,16 +128,26 @@ h1 {
 <div class="popup" id="popup">
   <img id="pfpImage">
   <div id="traits"></div>
+
   <button onclick="downloadImage()">Download</button>
+  <button onclick="shareImage()">Share</button>
+  <button onclick="closePopup()">Close</button>
 </div>
 
 <script>
 
-/* TRAITS */
+let isLoading = false;
+
+const chillWords = [
+  "chill","vibing","coolin","zen","relaxed",
+  "tranquilo","relajado","calm","breezy",
+  "気楽","无压力","floating"
+];
+
 function randomTraits() {
-  const hats = ["anime hair", "gold crown", "cyber helmet"];
-  const outfits = ["superhero suit", "futuristic armor", "samurai outfit", "NBA jersey"];
-  const backgrounds = ["space", "neon city", "sunset beach"];
+  const hats = ["anime hair","gold crown","cyber helmet"];
+  const outfits = ["superhero suit","futuristic armor","samurai outfit","NBA jersey"];
+  const backgrounds = ["space","neon city","sunset beach"];
 
   return {
     hat: hats[Math.floor(Math.random()*hats.length)],
@@ -198,48 +156,35 @@ function randomTraits() {
   };
 }
 
-/* LOADING */
-function animateLoading() {
+/* LOADING WORDS */
+function startWordCycle() {
   const bar = document.getElementById("loadingFill");
-  let width = 0;
-
-  const interval = setInterval(() => {
-    if (width >= 100) {
-      clearInterval(interval);
-    } else {
-      width += 3;
-      bar.style.width = width + "%";
-      bar.innerText = "CHILL";
-    }
-  }, 30);
-
-  return interval;
+  return setInterval(()=>{
+    bar.innerText = chillWords[Math.floor(Math.random()*chillWords.length)];
+  },400);
 }
 
 /* GENERATE */
 async function generatePFP() {
+  if (isLoading) return;
+  isLoading = true;
+
   const bar = document.getElementById("loadingFill");
+  bar.style.width = "100%";
 
-  bar.style.width = "0%";
-
-  const loading = animateLoading();
-
+  const wordCycle = startWordCycle();
   const traits = randomTraits();
 
   try {
     const res = await fetch("/api/generate", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: {"Content-Type":"application/json"},
       body: JSON.stringify(traits)
     });
 
     const data = await res.json();
 
-    clearInterval(loading);
-
-    bar.style.width = "100%";
+    clearInterval(wordCycle);
     bar.innerText = "DONE 😎";
 
     document.getElementById("pfpImage").src = data.image;
@@ -253,16 +198,25 @@ async function generatePFP() {
     document.getElementById("overlay").style.display = "block";
     document.getElementById("popup").style.display = "block";
 
-    setTimeout(() => {
-      bar.style.width = "0%";
-      bar.innerText = "Generate 😎";
-    }, 2000);
-
   } catch (err) {
-    console.error(err);
-    bar.innerText = "Error";
+    clearInterval(wordCycle);
+    bar.innerText = "try again 😎";
   }
+
+  setTimeout(()=>{
+    bar.style.width = "0%";
+    bar.innerText = "Generate 😎";
+    isLoading = false;
+  },1500);
 }
+
+/* CLOSE */
+function closePopup() {
+  document.getElementById("overlay").style.display = "none";
+  document.getElementById("popup").style.display = "none";
+}
+
+document.getElementById("overlay").addEventListener("click", closePopup);
 
 /* DOWNLOAD */
 function downloadImage() {
@@ -271,6 +225,14 @@ function downloadImage() {
   a.href = img;
   a.download = "chill.png";
   a.click();
+}
+
+/* SHARE */
+function shareImage() {
+  const text = encodeURIComponent("I just generated a 😎 Chill PFP");
+  const url = encodeURIComponent(window.location.href);
+
+  window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
 }
 
 </script>
