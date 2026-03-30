@@ -448,11 +448,17 @@ async function generatePFP() {
   if(isLoading) return;
   isLoading = true;
 
-  // immediately show first word
-  bar.innerText = chillWords[index];
+  const bar = document.getElementById("loadingFill");
+
+  const traits = randomTraits(); // 👈 ADD THIS
 
   try {
-    const res = await fetch("/api/generate", {method:"POST"});
+    const res = await fetch("/api/generate", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(traits) // 👈 SEND TRAITS
+    });
+
     const data = await res.json();
 
     pfpImage.src = data.image;
@@ -467,11 +473,10 @@ async function generatePFP() {
     overlay.style.display="block";
     popup.style.display="block";
 
-  } catch (err) {
+  } catch {
     bar.innerText = "try again 😎";
   }
 
-  // stop loading AFTER done
   setTimeout(()=>{
     isLoading = false;
     bar.innerText = "Generate PFP 😎";
@@ -526,6 +531,57 @@ function copyContract() {
   setTimeout(()=>{
     toast.classList.remove("show");
   },1500);
+}
+
+let lastTraits = null;
+
+function randomTraits() {
+  const hats = [
+    "Spiky Punk Hair","Long Wavy Locks","Curly Afro","Braided Dreadlocks",
+    "Samurai Topknot","Rainbow Undercut","Messy Bedhead","Buzz Cut Lightning",
+    "Flaming Mohawk","Cowboy Hat","Top Hat","Neon Beanie",
+    "Viking Helmet","Golden Crown","Wizard Hat","Pirate Hat",
+    "Angel Halo","Demon Horns","Cyber Helmet","Vegas Headdress"
+  ];
+
+  const outfits = [
+    "Leather Jacket","Oversized Hoodie","Chainmail Armor","Plate Armor",
+    "Tuxedo","Hawaiian Shirt","Fur Cape","Mystic Cloak",
+    "Bandolier","Gold Chains","Silk Scarf","Superhero Suit",
+    "Steampunk Vest","Samurai Armor","Crypto Hoodie"
+  ];
+
+  const backgrounds = [
+    "Neon Grid","Blockchain Matrix","Forest Mist","Deep Space",
+    "Vegas Lights","Lava","Aurora Ice","Cyber City Rain",
+    "Underwater","Desert","Castle Sky","Rainbow Pixels",
+    "Meme Void","Jungle","Arcade Glow"
+  ];
+
+  const poses = [
+    "front facing","slight tilt","leaning back",
+    "confident stance","relaxed pose"
+  ];
+
+  let traits;
+
+  do {
+    traits = {
+      hat: hats[Math.floor(Math.random()*hats.length)],
+      outfit: outfits[Math.floor(Math.random()*outfits.length)],
+      background: backgrounds[Math.floor(Math.random()*backgrounds.length)],
+      pose: poses[Math.floor(Math.random()*poses.length)]
+    };
+  } while (
+    lastTraits &&
+    traits.hat === lastTraits.hat &&
+    traits.outfit === lastTraits.outfit &&
+    traits.background === lastTraits.background &&
+    traits.pose === lastTraits.pose
+  );
+
+  lastTraits = traits;
+  return traits;
 }
 
 </script>
