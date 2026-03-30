@@ -1,4 +1,4 @@
-export async function GET() {
+export default async function handler(req, res) {
   try {
     const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
@@ -16,20 +16,15 @@ export async function GET() {
     const data = await response.json();
 
     if (!data.data || !data.data[0]?.b64_json) {
-      return new Response(JSON.stringify({ error: "No image returned" }), {
-        status: 500
-      });
+      res.status(500).json({ error: "No image returned", raw: data });
+      return;
     }
 
-    const image = `data:image/png;base64,${data.data[0].b64_json}`;
-
-    return new Response(JSON.stringify({ image }), {
-      headers: { "Content-Type": "application/json" }
+    res.status(200).json({
+      image: `data:image/png;base64,${data.data[0].b64_json}`
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 500
-    });
+    res.status(500).json({ error: err.message });
   }
 }
