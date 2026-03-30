@@ -1,7 +1,11 @@
 let cache = [];
+let isLoading = false;
 
+/* SAFE PRELOAD */
 async function preloadImages() {
-  for (let i = 0; i < 3; i++) {
+  if (cache.length >= 2) return;
+
+  try {
     const traits = randomTraits();
 
     const res = await fetch("/api/generate", {
@@ -12,34 +16,81 @@ async function preloadImages() {
 
     const data = await res.json();
 
-    cache.push({ image: data.image, traits });
+    if (data.image) {
+      cache.push({ image: data.image, traits });
+    }
+
+  } catch (err) {
+    console.error("Preload failed:", err);
   }
 }
 
-// preload on page load
-preloadImages();
-
+/* GENERATE */
 async function generatePFP() {
-  const bar = document.getElementById("loadingFill");
+  if (isLoading) return;
+  isLoading = true;
 
-  // INSTANT if cached
+  const bar = document.getElementById("loadingFill");
+  bar.innerText = "CHILL...";
+  bar.style.width = "30%";
+
+  // ✅ USE CACHE IF AVAILABLE
   if (cache.length > 0) {
     const item = cache.pop();
 
-    document.getElementById("pfpImage").src = item.image;
-    document.getElementById("traits").innerHTML = `
-      <p>Hat: ${item.traits.hat}</p>
-      <p>Outfit: ${item.traits.outfit}</p>
-      <p>Background: ${item.traits.background}</p>
-    `;
+    showResult(item.image, item.traits);
 
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("popup").style.display = "block";
-
-    preloadImages(); // refill cache
+    preloadImages();
+    isLoading = false;
     return;
   }
 
-  // fallback if empty
-  bar.innerText = "CHILL...";
+  const traits = randomTraits();
+
+  try {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(traits)
+    });
+
+    const data = await res.json();
+
+    if (!data.image) {
+      throw new Error("No image");
+    }
+
+    showResult(data.image, traits);
+
+    preloadImages();
+
+  } catch (err) {
+    console.error(err);
+    bar.innerText = "Try Again 😎";
+  }
+
+  bar.style.width = "100%";
+  isLoading = false;
+}
+
+/* SHOW RESULT */
+function showResult(image, traits) {
+  document.getElementById("pfpImage").src = image;
+
+  document.getElementById("traits").innerHTML = `
+    <p>Hat: ${traits.hat}</p>
+    <p>Outfit: ${traits.outfit}</p>
+    <p>Background: ${traits.background}</p>
+  `;
+
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById("popup").style.display = "block";
+
+  const bar = document.getElementById("loadingFill");
+  bar.innerText = "DONE 😎";
+
+  setTimeout(() => {
+    bar.style.width = "0%";
+    bar.innerText = "Generate 😎";
+  }, 1500);
 }
