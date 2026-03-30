@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
   try {
-    // ✅ SAFELY PARSE BODY
     let body = {};
 
     if (req.method === "POST") {
@@ -10,19 +9,42 @@ export default async function handler(req, res) {
     }
 
     const {
-      hat = "cool hat",
-      outfit = "futuristic outfit",
-      background = "neon background"
+      hair = "Golden Crown",
+      outfit = "Oversized Hoodie",
+      background = "Deep Space Nebula",
+      pose = "front facing"
     } = body;
 
+    // 🔥 MUCH BETTER PROMPT
     const prompt = `
-Front-facing centered 3D emoji with sunglasses, identical pose and lighting.
+A high-quality 3D render of the 😎 emoji character.
 
-Hat: ${hat}
-Outfit: ${outfit}
-Background: ${background}
+Core identity:
+- Round yellow emoji face
+- Black sunglasses (consistent across all generations)
+- Smooth glossy material
+- Same face every time
 
-Ultra high quality, glossy 3D render, vibrant, clean.
+Pose:
+${pose}
+
+Appearance:
+- Hair / Headwear: ${hair}
+- Clothing / Neck detail: ${outfit}
+
+Background:
+${background}
+
+Style:
+- Ultra clean 3D render
+- Centered composition
+- Soft cinematic lighting
+- Vibrant but balanced colors
+- No distortion, no extra limbs
+- Consistent character design
+- Meme coin aesthetic
+
+Make it look like a premium collectible avatar.
 `;
 
     const response = await fetch("https://api.openai.com/v1/images/generations", {
@@ -40,10 +62,12 @@ Ultra high quality, glossy 3D render, vibrant, clean.
 
     const data = await response.json();
 
-    // ✅ SAFE CHECK
     if (!data?.data?.[0]?.b64_json) {
       console.error("OpenAI error:", data);
-      return res.status(500).json({ error: "Image generation failed", raw: data });
+      return res.status(500).json({
+        error: "Image generation failed",
+        raw: data
+      });
     }
 
     return res.status(200).json({
