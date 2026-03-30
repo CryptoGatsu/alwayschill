@@ -1,96 +1,57 @@
-let cache = [];
-let isLoading = false;
-
-/* SAFE PRELOAD */
-async function preloadImages() {
-  if (cache.length >= 2) return;
-
+export default async function handler(req, res) {
   try {
-    const traits = randomTraits();
+    // ✅ SAFELY PARSE BODY
+    let body = {};
 
-    const res = await fetch("/api/generate", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(traits)
-    });
-
-    const data = await res.json();
-
-    if (data.image) {
-      cache.push({ image: data.image, traits });
+    if (req.method === "POST") {
+      body = typeof req.body === "string"
+        ? JSON.parse(req.body)
+        : req.body || {};
     }
 
-  } catch (err) {
-    console.error("Preload failed:", err);
-  }
-}
+    const {
+      hat = "cool hat",
+      outfit = "futuristic outfit",
+      background = "neon background"
+    } = body;
 
-/* GENERATE */
-async function generatePFP() {
-  if (isLoading) return;
-  isLoading = true;
+    const prompt = `
+Front-facing centered 3D emoji with sunglasses, identical pose and lighting.
 
-  const bar = document.getElementById("loadingFill");
-  bar.innerText = "CHILL...";
-  bar.style.width = "30%";
+Hat: ${hat}
+Outfit: ${outfit}
+Background: ${background}
 
-  // ✅ USE CACHE IF AVAILABLE
-  if (cache.length > 0) {
-    const item = cache.pop();
+Ultra high quality, glossy 3D render, vibrant, clean.
+`;
 
-    showResult(item.image, item.traits);
-
-    preloadImages();
-    isLoading = false;
-    return;
-  }
-
-  const traits = randomTraits();
-
-  try {
-    const res = await fetch("/api/generate", {
+    const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(traits)
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-image-1",
+        prompt,
+        size: "1024x1024"
+      })
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
-    if (!data.image) {
-      throw new Error("No image");
+    // ✅ SAFE CHECK
+    if (!data?.data?.[0]?.b64_json) {
+      console.error("OpenAI error:", data);
+      return res.status(500).json({ error: "Image generation failed", raw: data });
     }
 
-    showResult(data.image, traits);
-
-    preloadImages();
+    return res.status(200).json({
+      image: `data:image/png;base64,${data.data[0].b64_json}`
+    });
 
   } catch (err) {
-    console.error(err);
-    bar.innerText = "Try Again 😎";
+    console.error("SERVER ERROR:", err);
+    return res.status(500).json({ error: err.message });
   }
-
-  bar.style.width = "100%";
-  isLoading = false;
-}
-
-/* SHOW RESULT */
-function showResult(image, traits) {
-  document.getElementById("pfpImage").src = image;
-
-  document.getElementById("traits").innerHTML = `
-    <p>Hat: ${traits.hat}</p>
-    <p>Outfit: ${traits.outfit}</p>
-    <p>Background: ${traits.background}</p>
-  `;
-
-  document.getElementById("overlay").style.display = "block";
-  document.getElementById("popup").style.display = "block";
-
-  const bar = document.getElementById("loadingFill");
-  bar.innerText = "DONE 😎";
-
-  setTimeout(() => {
-    bar.style.width = "0%";
-    bar.innerText = "Generate 😎";
-  }, 1500);
 }
