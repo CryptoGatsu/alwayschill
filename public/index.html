@@ -75,6 +75,23 @@ h1 {
 
 .card:hover { transform: translateY(-6px); }
 
+.card-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+.card-btn:hover {
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
 /* GENERATE BUTTON */
 .generate-btn {
   position: fixed;
@@ -120,53 +137,7 @@ h1 {
               url('/sunset.png') center/cover no-repeat;
 }
 
-.chill-box {
-  background: rgba(0,0,0,0.45);
-  padding: 25px;
-  border-radius: 16px;
-  text-decoration: none;
-  color: white;
-  backdrop-filter: blur(10px);
-  transition: 0.25s;
-  display: block;
-}
 
-.chill-box h3 {
-  margin-bottom: 10px;
-}
-
-.chill-box p {
-  opacity: 0.8;
-  font-size: 14px;
-}
-
-.chill-box:hover {
-  transform: translateY(-6px);
-  background: rgba(0,0,0,0.6);
-}
-
-.contract-box {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-.contract-box button {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: rgba(255,255,255,0.1);
-  color: white;
-}
-
-.contract-box button:hover {
-  background: rgba(255,255,255,0.2);
-}
 
 /* TOAST */
 #toast {
@@ -335,25 +306,22 @@ Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • 
 
 <div class="grid">
 
-  <a id="buyBtn" href="#" class="card">
+  <div class="card">
     <h3>🪙 Buy</h3>
     <p>Start your journey. Early vibes only. Enter before the crowd catches on.</p>
-  </a>
-
-  <a id="chartBtn" href="#" class="card">
-    <h3>📊 Chart</h3>
-    <p>Track the movement in real time. Watch the chill rise and fall.</p>
-  </a>
-
-  <a href="https://x.com/i/communities/2038577284320489664" target="_blank" class="card">
-    <h3>🐦 Community</h3>
-    <p>Join the squad. Stay updated. Share the vibe.</p>
-  </a>
+    <a id="buyBtn" href="#" target="_blank" class="card-btn">Go to Pump.fun</a>
+  </div>
 
   <div class="card">
-    <h3>📄 Contract</h3>
-    <p id="contractText">Loading...</p>
-    <button onclick="copyContract()">Copy</button>
+    <h3>📊 Chart</h3>
+    <p>Track the movement in real time. Watch the chill rise and fall.</p>
+    <a id="chartBtn" href="#" target="_blank" class="card-btn">View Chart</a>
+  </div>
+
+  <div class="card">
+    <h3>🐦 Community</h3>
+    <p>Join the squad. Stay updated. Share the vibe.</p>
+    <a href="https://x.com/i/communities/2038577284320489664" target="_blank" class="card-btn">Join X Community</a>
   </div>
 
 </div>
