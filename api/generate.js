@@ -9,13 +9,13 @@ export default async function handler(req, res) {
     }
 
     const {
-      hair = "Golden Crown",
-      outfit = "Oversized Hoodie",
-      background = "Deep Space Nebula",
-      pose = "front facing"
+      hair = "Spiky Punk Hair, Long Wavy Locks, Curly Afro, Braided Dreadlocks, Samurai Topknot, Rainbow Dyed Undercut, Messy Bedhead, Buzz Cut with Lightning Bolt, Flaming Mohawk, Cowboy Stetson, Victorian Top Hat, Neon Beanie, Viking Horned Helmet, Golden Crown, Wizard Pointed Hat, Pirate Tricorn, Angel Halo, Demon Horns, Cyberpunk Visor Helmet, Las Vegas Feather Headdress",
+      outfit = "Leather Jacket Collar, Oversized Hoodie, Chainmail Gorget, Full Plate Armor Neckpiece, Tuxedo Bowtie & Collar, Hawaiian Shirt Open Collar, Fur-Lined Cape, Mystic Cloak Hood, Bandolier Straps, Thick Gold Chains, Silk Scarf, Superhero Cape Clasp, Steampunk Vest, Samurai Armor Pauldrons, Crypto Hoodie Neckline",
+      background = "Solid Neon Grid, Blockchain Matrix Code, Enchanted Forest Mist, Deep Space Nebula, Las Vegas Strip Lights, Fiery Lava Glow, Icy Arctic Aurora, Cyber City Rain, Underwater Bubbles, Golden Desert Dunes, Fantasy Castle Sky, Rainbow Pixel Explosion, Dark Meme Void, Jungle Canopy, Retro Arcade Glow",
+      pose = "Cool Side Glance, Confident Arms Crossed, Smug Head Tilt, Peace Sign Hand, Pointing Forward, Thumbs Up, Victory Hand Gesture, Hand on Chin Thinking, Winking, Tongue Out, Middle Finger, Shushing Finger, Flexing Bicep, Dabbing Pose, Sunglasses Adjustment, Front Pose",
+    // 🔥 MUCH BETTER PROMPT
     } = body;
 
-    // 🔥 MUCH BETTER PROMPT
     const prompt = `
 A high-quality 3D render of the 😎 emoji character.
 
