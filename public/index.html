@@ -304,22 +304,28 @@ const chillWords = [
 let index = 0;
 let isLoading = false;
 
-// ELEMENTS (IMPORTANT FIX)
 const overlay = document.getElementById("overlay");
 const popup = document.getElementById("popup");
 const pfpImage = document.getElementById("pfpImage");
+const bar = document.getElementById("loadingFill");
 
-// WORD CYCLER
+/* 🔄 WORD CYCLER (NOW WORKS DURING LOADING) */
 setInterval(()=>{
-  if(isLoading) return;
+  const el = bar;
 
-  const el = document.getElementById("loadingFill");
   el.style.opacity = 0;
 
   setTimeout(()=>{
-    el.innerText = chillWords[index];
+    if(isLoading){
+      // 🔥 cycle words WHILE loading
+      el.innerText = chillWords[index];
+      index = (index + 1) % chillWords.length;
+    } else {
+      // default button text
+      el.innerText = "Generate PFP 😎";
+    }
+
     el.style.opacity = 1;
-    index = (index + 1) % chillWords.length;
   },400);
 
 },2500);
@@ -329,28 +335,34 @@ async function generatePFP() {
   if(isLoading) return;
   isLoading = true;
 
-  const bar = document.getElementById("loadingFill");
-  bar.innerText = "Generating...";
+  // immediately show first word
+  bar.innerText = chillWords[index];
 
-  const res = await fetch("/api/generate", {method:"POST"});
-  const data = await res.json();
+  try {
+    const res = await fetch("/api/generate", {method:"POST"});
+    const data = await res.json();
 
-  pfpImage.src = data.image;
+    pfpImage.src = data.image;
 
-  const grid = document.getElementById("pfpGrid");
-  const img = document.createElement("img");
-  img.src = data.image;
+    const grid = document.getElementById("pfpGrid");
+    const img = document.createElement("img");
+    img.src = data.image;
 
-  grid.prepend(img);
-  if(grid.children.length > 4) grid.removeChild(grid.lastChild);
+    grid.prepend(img);
+    if(grid.children.length > 4) grid.removeChild(grid.lastChild);
 
-  overlay.style.display="block";
-  popup.style.display="block";
+    overlay.style.display="block";
+    popup.style.display="block";
 
+  } catch (err) {
+    bar.innerText = "try again 😎";
+  }
+
+  // stop loading AFTER done
   setTimeout(()=>{
-    bar.innerText="Generate 😎";
-    isLoading=false;
-  },1500);
+    isLoading = false;
+    bar.innerText = "Generate PFP 😎";
+  },1000);
 }
 
 // CLOSE
