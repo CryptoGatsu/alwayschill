@@ -10,18 +10,24 @@
 body {
   margin: 0;
   font-family: 'Fredoka', sans-serif;
+  color: white;
+  background: black;
+}
+
+/* HERO SECTION */
+.hero {
   background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
               url('/beach.png') center/cover no-repeat;
-  color: white;
+  padding-bottom: 40px;
 }
 
 h1 {
   text-align: center;
-  margin-top: 60px;
+  padding-top: 60px;
   font-size: 3rem;
 }
 
-/* KEEP YOUR ORIGINAL GRID STYLES */
+/* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -35,7 +41,7 @@ h1 {
   border-radius: 16px;
   text-align: center;
   backdrop-filter: blur(10px);
-  transition: transform 0.2s ease;
+  transition: 0.2s;
 }
 
 .card:hover {
@@ -54,6 +60,7 @@ h1 {
   background: black;
   box-shadow: 0 0 30px rgba(0,0,0,0.8);
   cursor: pointer;
+  z-index: 10;
 }
 
 .loading-fill {
@@ -73,12 +80,11 @@ h1 {
 /* POPUP */
 .overlay {
   position: fixed;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.6);
   backdrop-filter: blur(6px);
   display: none;
-  top: 0;
+  z-index: 20;
 }
 
 .popup {
@@ -87,12 +93,12 @@ h1 {
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgba(0,0,0,0.45);
-  color: white;
+  backdrop-filter: blur(12px);
   padding: 25px;
   border-radius: 16px;
   text-align: center;
-  backdrop-filter: blur(12px);
   display: none;
+  z-index: 21;
 }
 
 .popup img {
@@ -125,8 +131,8 @@ h1 {
 
 /* BOTTOM SECTION */
 .chill-section {
-  margin-top: 50px;
-  padding: 80px 40px;
+  position: relative;
+  padding: 100px 40px;
   text-align: center;
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
               url('/sunset.png') center/cover no-repeat;
@@ -152,16 +158,63 @@ h1 {
 .chill-box:hover {
   transform: translateY(-6px);
 }
+
+.cta {
+  margin-top: 60px;
+  font-size: 20px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>😎 CHILL</h1>
+<!-- HERO -->
+<div class="hero">
+  <h1>😎 CHILL</h1>
 
-<!-- 🔥 YOUR ORIGINAL GRID (DO NOT TOUCH THIS PART) -->
-<div class="grid">
-  <!-- KEEP EXACTLY YOUR ORIGINAL CARDS HERE -->
+  <div class="grid">
+
+    <div class="card">
+      <h3>😎 The Emoji</h3>
+      <p>The 😎 emoji represents confidence, success, and effortless cool. It says everything without saying anything.</p>
+    </div>
+
+    <div class="card">
+      <h3>🌍 Global Usage</h3>
+      <p>Used millions of times daily across every platform. Recognized instantly worldwide.</p>
+    </div>
+
+    <div class="card">
+      <h3>🪙 Why Tokenize</h3>
+      <p>Most memes try to go viral. 😎 already is. Tokenizing it gives ownership to the vibe.</p>
+    </div>
+
+    <div class="card">
+      <h3>🧠 Philosophy</h3>
+      <p>No stress. No roadmap pressure. Just chill and let the community shape it.</p>
+    </div>
+
+    <div class="card">
+      <h3>📦 Supply</h3>
+      <p>1,000,000,000 $CHILL. Fixed. No inflation.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚀 Launch</h3>
+      <p>100% fair launch. No presale. No insiders.</p>
+    </div>
+
+    <div class="card">
+      <h3>💧 Liquidity</h3>
+      <p>Bonding curve driven. Market decides everything.</p>
+    </div>
+
+    <div class="card">
+      <h3>💸 Taxes</h3>
+      <p>0% buy / 0% sell. Because chill shouldn’t cost extra.</p>
+    </div>
+
+  </div>
 </div>
 
 <!-- GENERATOR -->
@@ -180,7 +233,7 @@ h1 {
   <button onclick="closePopup()">Close</button>
 </div>
 
-<!-- NEW SECTION -->
+<!-- BOTTOM -->
 <div class="chill-section">
 
   <h2>Join the Chill Movement 😎</h2>
@@ -209,16 +262,26 @@ h1 {
 
   </div>
 
+  <div class="cta">
+    <h3>Don’t think too hard.</h3>
+    <p>Just chill.</p>
+  </div>
+
 </div>
 
 <script>
+
 let isLoading = false;
 
 function randomTraits() {
+  const hats = ["anime hair","gold crown","cyber helmet"];
+  const outfits = ["superhero suit","futuristic armor","samurai outfit","NBA jersey"];
+  const backgrounds = ["space","neon city","sunset beach"];
+
   return {
-    hat: "anime hair",
-    outfit: "superhero suit",
-    background: "space"
+    hat: hats[Math.floor(Math.random()*hats.length)],
+    outfit: outfits[Math.floor(Math.random()*outfits.length)],
+    background: backgrounds[Math.floor(Math.random()*backgrounds.length)]
   };
 }
 
@@ -243,7 +306,7 @@ async function generatePFP() {
 
     bar.innerText = "DONE 😎";
 
-    document.getElementById("pfpImage").src = data.image;
+    pfpImage.src = data.image;
     overlay.style.display = "block";
     popup.style.display = "block";
 
@@ -294,6 +357,7 @@ document.addEventListener("click", (e) => {
     setTimeout(()=>emoji.remove(),1000);
   }
 });
+
 </script>
 
 </body>
