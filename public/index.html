@@ -10,8 +10,32 @@
 body {
   margin: 0;
   font-family: 'Fredoka', sans-serif;
-  background: linear-gradient(to bottom, #4facfe, #00f2fe);
+  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+              url('/beach.png') center/cover no-repeat;
+  color: white;
   cursor: url('https://twemoji.maxcdn.com/v/latest/72x72/1f60e.png'), auto;
+}
+
+/* HEADER */
+h1 {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 3rem;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 40px;
+}
+
+.card {
+  background: rgba(0,0,0,0.4);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
 }
 
 /* FLOATING BUTTON */
@@ -19,25 +43,38 @@ body {
   position: fixed;
   bottom: 30px;
   right: 30px;
+  width: 160px;
+  height: 50px;
   background: black;
-  color: white;
-  padding: 20px;
-  border-radius: 50px;
-  cursor: pointer;
+  border-radius: 25px;
+  overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.6);
-  transition: 0.3s;
+  cursor: pointer;
 }
 
-.generate-btn:hover {
-  transform: scale(1.1);
-}
-
-/* LOADING INSIDE BUTTON */
-.loading-text {
+/* LOADING BAR */
+.loading-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00f2fe, #4facfe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 14px;
+  color: black;
+  font-weight: bold;
 }
 
 /* POPUP */
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  top: 0;
+}
+
 .popup {
   position: fixed;
   top: 50%;
@@ -49,34 +86,34 @@ body {
   border-radius: 20px;
   display: none;
   text-align: center;
-  z-index: 1000;
 }
 
 .popup img {
   max-width: 300px;
   border-radius: 12px;
 }
-
-/* BACKDROP */
-.overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  top: 0;
-  left: 0;
-}
 </style>
 </head>
 
 <body>
 
-<h1 style="text-align:center; margin-top:100px;">😎 CHILL</h1>
+<h1>😎 CHILL</h1>
 
-<!-- FLOATING BUTTON -->
-<div class="generate-btn" onclick="generatePFP()" id="genBtn">
-  <span id="btnText">Generate 😎</span>
+<!-- GRID -->
+<div class="grid">
+  <div class="card">Why 😎</div>
+  <div class="card">Usage</div>
+  <div class="card">Token</div>
+  <div class="card">Vibe</div>
+  <div class="card">Supply</div>
+  <div class="card">Launch</div>
+  <div class="card">Liquidity</div>
+  <div class="card">Taxes</div>
+</div>
+
+<!-- BUTTON -->
+<div class="generate-btn" onclick="generatePFP()">
+  <div class="loading-fill" id="loadingFill">Generate 😎</div>
 </div>
 
 <!-- POPUP -->
@@ -90,16 +127,11 @@ body {
 
 <script>
 
+/* TRAITS */
 function randomTraits() {
-  const hats = ["gold crown", "anime hair", "cyber helmet"];
-  const outfits = [
-    "anime streetwear",
-    "futuristic armor",
-    "fantasy knight",
-    "NBA jersey",
-    "superhero suit"
-  ];
-  const backgrounds = ["neon city", "space", "sunset beach"];
+  const hats = ["anime hair", "gold crown", "cyber helmet"];
+  const outfits = ["superhero suit", "futuristic armor", "samurai outfit", "NBA jersey"];
+  const backgrounds = ["space", "neon city", "sunset beach"];
 
   return {
     hat: hats[Math.floor(Math.random()*hats.length)],
@@ -108,10 +140,31 @@ function randomTraits() {
   };
 }
 
-async function generatePFP() {
-  const btn = document.getElementById("btnText");
+/* LOADING */
+function animateLoading() {
+  const bar = document.getElementById("loadingFill");
+  let width = 0;
 
-  btn.innerText = "CHILL...";
+  const interval = setInterval(() => {
+    if (width >= 100) {
+      clearInterval(interval);
+    } else {
+      width += 3;
+      bar.style.width = width + "%";
+      bar.innerText = "CHILL";
+    }
+  }, 30);
+
+  return interval;
+}
+
+/* GENERATE */
+async function generatePFP() {
+  const bar = document.getElementById("loadingFill");
+
+  bar.style.width = "0%";
+
+  const loading = animateLoading();
 
   const traits = randomTraits();
 
@@ -126,6 +179,11 @@ async function generatePFP() {
 
     const data = await res.json();
 
+    clearInterval(loading);
+
+    bar.style.width = "100%";
+    bar.innerText = "DONE 😎";
+
     document.getElementById("pfpImage").src = data.image;
 
     document.getElementById("traits").innerHTML = `
@@ -137,13 +195,18 @@ async function generatePFP() {
     document.getElementById("overlay").style.display = "block";
     document.getElementById("popup").style.display = "block";
 
-    btn.innerText = "Generate 😎";
+    setTimeout(() => {
+      bar.style.width = "0%";
+      bar.innerText = "Generate 😎";
+    }, 2000);
 
   } catch (err) {
-    btn.innerText = "Error";
+    console.error(err);
+    bar.innerText = "Error";
   }
 }
 
+/* DOWNLOAD */
 function downloadImage() {
   const img = document.getElementById("pfpImage").src;
   const a = document.createElement("a");
