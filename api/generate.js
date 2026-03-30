@@ -15,11 +15,15 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    if (!data.data || !data.data[0]) {
+    if (!data.data || !data.data[0]?.b64_json) {
       throw new Error("No image returned");
     }
 
-    res.status(200).json({ image: data.data[0].url });
+    // Convert base64 to usable image
+    const imageBase64 = data.data[0].b64_json;
+    const imageUrl = `data:image/png;base64,${imageBase64}`;
+
+    res.status(200).json({ image: imageUrl });
 
   } catch (error) {
     console.error(error);
