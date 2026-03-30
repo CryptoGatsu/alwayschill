@@ -121,6 +121,47 @@ h1 {
   gap: 25px;
 }
 
+.contract-box {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.contract-box button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.contract-box button:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* TOAST */
+#toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  padding: 10px 16px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+#toast.show {
+  opacity: 1;
+}
+
 /* LATEST PFP */
 .pfp-grid {
   display: grid;
@@ -288,7 +329,12 @@ Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • 
 </div>
 
 <!-- CONTRACT DISPLAY -->
-<p id="contractText" style="margin-top:20px; opacity:0.8;"></p>
+<div class="contract-box">
+  <span id="contractText">Contract: loading...</span>
+  <button onclick="copyContract()">Copy</button>
+</div>
+
+<div id="toast">Copied 😎</div>
 
   <h3 style="margin-top:60px;">Latest Chill Creations 😎</h3>
   <div class="pfp-grid" id="pfpGrid"></div>
@@ -412,9 +458,23 @@ async function loadConfig() {
   document.getElementById("chartBtn").href = data.dexscreener;
 
   // Show contract
-  document.getElementById("contractText").innerText = data.contract;
+  document.getElementById("contractText").innerHTML =
+  `Contract: <a href="https://solscan.io/token/${data.contract}" target="_blank">${data.contract}</a>`;
 }
 
 loadConfig();
+
+function copyContract() {
+  const text = document.getElementById("contractText").innerText.replace("Contract: ","");
+
+  navigator.clipboard.writeText(text);
+
+  const toast = document.getElementById("toast");
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },1500);
+}
 
 </script>
