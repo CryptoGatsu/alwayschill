@@ -10,7 +10,7 @@
 body {
   margin: 0;
   font-family: 'Fredoka', sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+  background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
               url('/beach.png') center/cover no-repeat;
   color: white;
   cursor: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f60e.png') 16 16, auto;
@@ -20,47 +20,78 @@ body {
 h1 {
   text-align: center;
   margin-top: 60px;
-  font-size: 3rem;
+  font-size: 3.2rem;
+  letter-spacing: 1px;
 }
 
 /* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  padding: 40px;
+  gap: 25px;
+  padding: 50px;
 }
 
 .card {
-  background: rgba(0,0,0,0.4);
-  padding: 20px;
-  border-radius: 12px;
+  background: rgba(0,0,0,0.45);
+  padding: 25px;
+  border-radius: 16px;
   text-align: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease;
 }
 
-/* FLOAT BUTTON */
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* BUTTON */
 .generate-btn {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 170px;
+  width: 180px;
   height: 55px;
   border-radius: 30px;
   overflow: hidden;
   background: black;
-  box-shadow: 0 0 25px rgba(0,0,0,0.7);
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
   cursor: pointer;
 }
 
 .loading-fill {
-  width: 0%;
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
+  font-weight: bold;
+  transition: all 0.4s ease;
+}
+
+.loading-fill.active {
   background: linear-gradient(90deg,#00f2fe,#4facfe);
   color: black;
-  font-weight: bold;
+}
+
+/* TEXT FADE */
+.fade {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fade.show {
+  opacity: 1;
 }
 
 /* POPUP */
@@ -69,6 +100,7 @@ h1 {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
   display: none;
   top: 0;
 }
@@ -77,26 +109,37 @@ h1 {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: rgba(255,255,255,0.9);
   color: black;
   padding: 25px;
   border-radius: 20px;
   display: none;
   text-align: center;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: popIn 0.3s ease forwards;
+}
+
+@keyframes popIn {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .popup img {
   max-width: 300px;
   border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .popup button {
   margin: 5px;
-  padding: 10px 15px;
-  border-radius: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -105,24 +148,78 @@ h1 {
 
 <h1>😎 CHILL</h1>
 
-<!-- GRID -->
 <div class="grid">
-  <div class="card"><h3>😎 Why Chill</h3><p>Universal symbol of effortless winning.</p></div>
-  <div class="card"><h3>🌍 Usage</h3><p>Millions daily. Global vibe.</p></div>
-  <div class="card"><h3>🪙 Token</h3><p>Already viral. Now tradable.</p></div>
-  <div class="card"><h3>🧠 Vibe</h3><p>No roadmap. Just chill.</p></div>
-  <div class="card"><h3>📦 Supply</h3><p>1B $CHILL</p></div>
-  <div class="card"><h3>🚀 Launch</h3><p>Fair launch. No insiders.</p></div>
-  <div class="card"><h3>💧 Liquidity</h3><p>Bonding curve.</p></div>
-  <div class="card"><h3>💸 Taxes</h3><p>0% always.</p></div>
+
+  <div class="card">
+    <h3>😎 The Emoji</h3>
+    <p>
+      The 😎 emoji is the internet’s universal signal of confidence,
+      success, and effortless cool. No explanation needed.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>🌍 Global Usage</h3>
+    <p>
+      Used millions of times daily across every platform.
+      It transcends language and culture instantly.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>🪙 Why Tokenize</h3>
+    <p>
+      It’s already viral. Already understood.
+      Turning 😎 into a token simply gives the vibe ownership.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>🧠 Philosophy</h3>
+    <p>
+      No pressure. No roadmap stress.
+      Just chill, build, and let the community decide.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>📦 Supply</h3>
+    <p>
+      1,000,000,000 $CHILL.<br>
+      Fixed supply. No inflation.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Launch</h3>
+    <p>
+      Fair launch on Pump.fun.<br>
+      No presale. No insiders. Pure vibes.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>💧 Liquidity</h3>
+    <p>
+      Managed by bonding curve.
+      The market decides the flow.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>💸 Taxes</h3>
+    <p>
+      0% buy / 0% sell.<br>
+      Because chill shouldn’t cost extra.
+    </p>
+  </div>
+
 </div>
 
-<!-- GENERATE BUTTON -->
 <div class="generate-btn" onclick="generatePFP()">
-  <div class="loading-fill" id="loadingFill">Generate 😎</div>
+  <div class="loading-fill fade show" id="loadingFill">Generate 😎</div>
 </div>
 
-<!-- POPUP -->
 <div class="overlay" id="overlay"></div>
 
 <div class="popup" id="popup">
@@ -156,12 +253,21 @@ function randomTraits() {
   };
 }
 
-/* LOADING WORDS */
+/* WORD ANIMATION */
 function startWordCycle() {
   const bar = document.getElementById("loadingFill");
+
+  bar.classList.add("active");
+
   return setInterval(()=>{
-    bar.innerText = chillWords[Math.floor(Math.random()*chillWords.length)];
-  },400);
+    bar.classList.remove("show");
+
+    setTimeout(()=>{
+      bar.innerText = chillWords[Math.floor(Math.random()*chillWords.length)];
+      bar.classList.add("show");
+    },200);
+
+  },1200);
 }
 
 /* GENERATE */
@@ -170,9 +276,10 @@ async function generatePFP() {
   isLoading = true;
 
   const bar = document.getElementById("loadingFill");
-  bar.style.width = "100%";
+  bar.innerText = "chill...";
+  bar.classList.add("active");
 
-  const wordCycle = startWordCycle();
+  const cycle = startWordCycle();
   const traits = randomTraits();
 
   try {
@@ -184,7 +291,7 @@ async function generatePFP() {
 
     const data = await res.json();
 
-    clearInterval(wordCycle);
+    clearInterval(cycle);
     bar.innerText = "DONE 😎";
 
     document.getElementById("pfpImage").src = data.image;
@@ -199,12 +306,12 @@ async function generatePFP() {
     document.getElementById("popup").style.display = "block";
 
   } catch (err) {
-    clearInterval(wordCycle);
+    clearInterval(cycle);
     bar.innerText = "try again 😎";
   }
 
   setTimeout(()=>{
-    bar.style.width = "0%";
+    bar.classList.remove("active");
     bar.innerText = "Generate 😎";
     isLoading = false;
   },1500);
@@ -229,9 +336,8 @@ function downloadImage() {
 
 /* SHARE */
 function shareImage() {
-  const text = encodeURIComponent("I just generated a 😎 Chill PFP");
+  const text = encodeURIComponent("I just made a 😎 CHILL PFP");
   const url = encodeURIComponent(window.location.href);
-
   window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
 }
 
