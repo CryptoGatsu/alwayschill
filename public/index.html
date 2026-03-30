@@ -14,6 +14,68 @@ body {
   background: black;
 }
 
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 50;
+
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+}
+
+.nav-left {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.nav-right a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: white;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.nav-right a:hover {
+  opacity: 1;
+}
+
+/* PUSH CONTENT DOWN (important) */
+.hero {
+  padding-top: 80px;
+}
+
+/* TICKER */
+.ticker {
+  width: 100%;
+  overflow: hidden;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ticker-track {
+  white-space: nowrap;
+  display: inline-block;
+  padding: 12px 0;
+  font-size: 14px;
+  opacity: 0.8;
+
+  animation: scrollTicker 20s linear infinite;
+}
+
+@keyframes scrollTicker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* HERO SECTION */
 .hero {
   background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
@@ -129,7 +191,11 @@ h1 {
   }
 }
 
+
+
 /* BOTTOM SECTION */
+
+
 .chill-section {
   position: relative;
   padding: 100px 40px;
@@ -167,6 +233,17 @@ h1 {
 </head>
 
 <body>
+
+  <div class="navbar">
+  <div class="nav-left">😎 CHILL</div>
+
+  <div class="nav-right">
+    <a href="#">About</a>
+    <a href="#">Generator</a>
+    <a href="#">Buy</a>
+    <a href="https://x.com/i/communities/2038577284320489664" target="_blank">Community</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -231,6 +308,14 @@ h1 {
   <button onclick="downloadImage()">Download</button>
   <button onclick="shareImage()">Share</button>
   <button onclick="closePopup()">Close</button>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • Serene • Unbothered • Chilled-out • Zen • Blasé • Nonchalant • Tranquil • Carefree • Low-key •
+    Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • Serene • Unbothered • Chilled-out • Zen • Blasé • Nonchalant • Tranquil • Carefree • Low-key •
+  </div>
 </div>
 
 <!-- BOTTOM -->
