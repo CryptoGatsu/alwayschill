@@ -138,8 +138,10 @@ h1 {
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
   display: none;
+  z-index: 100;
 }
 
 .popup {
@@ -147,10 +149,45 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.5);
+  
+  width: 320px;
+  max-width: 90vw;
+
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+
+  border-radius: 20px;
   padding: 20px;
-  border-radius: 16px;
+  text-align: center;
+
   display: none;
+  z-index: 101;
+}
+
+.popup img {
+  width: 100%;
+  border-radius: 14px;
+}
+
+.popup-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.popup-actions button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  transition: 0.2s;
+}
+
+.popup-actions button:hover {
+  background: rgba(255,255,255,0.2);
 }
 
 </style>
@@ -246,8 +283,15 @@ Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • 
 </div>
 
 <div class="overlay" id="overlay"></div>
+
 <div class="popup" id="popup">
   <img id="pfpImage">
+
+  <div class="popup-actions">
+    <button onclick="downloadImage()">Download</button>
+    <button onclick="shareImage()">Share</button>
+    <button onclick="closePopup()">Close</button>
+  </div>
 </div>
 
 <script>
@@ -260,17 +304,27 @@ const chillWords = [
 let index = 0;
 let isLoading = false;
 
+// ELEMENTS (IMPORTANT FIX)
+const overlay = document.getElementById("overlay");
+const popup = document.getElementById("popup");
+const pfpImage = document.getElementById("pfpImage");
+
+// WORD CYCLER
 setInterval(()=>{
   if(isLoading) return;
+
   const el = document.getElementById("loadingFill");
   el.style.opacity = 0;
+
   setTimeout(()=>{
     el.innerText = chillWords[index];
     el.style.opacity = 1;
     index = (index + 1) % chillWords.length;
   },400);
+
 },2500);
 
+// GENERATOR
 async function generatePFP() {
   if(isLoading) return;
   isLoading = true;
@@ -299,7 +353,26 @@ async function generatePFP() {
   },1500);
 }
 
-</script>
+// CLOSE
+function closePopup() {
+  overlay.style.display = "none";
+  popup.style.display = "none";
+}
 
-</body>
-</html>
+// DOWNLOAD
+function downloadImage() {
+  const a = document.createElement("a");
+  a.href = pfpImage.src;
+  a.download = "chill.png";
+  a.click();
+}
+
+// SHARE
+function shareImage() {
+  window.open("https://twitter.com/intent/tweet?text=Just made a Chill PFP 😎");
+}
+
+// CLICK OUTSIDE CLOSE (FINAL FIX)
+overlay.onclick = closePopup;
+
+</script>
