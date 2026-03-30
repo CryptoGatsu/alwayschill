@@ -59,6 +59,11 @@ h1 {
   padding: 50px;
 }
 
+.chill-section .grid {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
 .card {
   background: rgba(0,0,0,0.45);
   padding: 25px;
@@ -328,22 +333,28 @@ Relaxed • Mellow • Laid-back • Casual • Easygoing • Cool • Calm • 
 
   <h2>Join the Chill Movement 😎</h2>
 
-<div class="chill-grid">
+<div class="grid">
 
-  <a id="buyBtn" href="#" class="chill-box">
+  <a id="buyBtn" href="#" class="card">
     <h3>🪙 Buy</h3>
     <p>Start your journey. Early vibes only. Enter before the crowd catches on.</p>
   </a>
 
-  <a id="chartBtn" href="#" class="chill-box">
+  <a id="chartBtn" href="#" class="card">
     <h3>📊 Chart</h3>
     <p>Track the movement in real time. Watch the chill rise and fall.</p>
   </a>
 
-  <a href="https://x.com/i/communities/2038577284320489664" target="_blank" class="chill-box">
+  <a href="https://x.com/i/communities/2038577284320489664" target="_blank" class="card">
     <h3>🐦 Community</h3>
     <p>Join the squad. Stay updated. Share the vibe.</p>
   </a>
+
+  <div class="card">
+    <h3>📄 Contract</h3>
+    <p id="contractText">Loading...</p>
+    <button onclick="copyContract()">Copy</button>
+  </div>
 
 </div>
 
