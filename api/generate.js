@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-image-1",
         prompt: "Front-facing centered 3D emoji with sunglasses, identical pose, random outfit and background, ultra HD",
-        size: "512x512"
+        size: "1024x1024"
       })
     });
 
