@@ -361,6 +361,29 @@ h1 {
   }
 }
 
+.generate-wrap {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔥 centers label + button */
+}
+
+/* REMOVE right positioning from label */
+.generate-label {
+  position: static;
+  margin-bottom: 8px;
+  font-size: 14px;
+  opacity: 0.85;
+  text-align: center;
+
+  text-shadow: 0 0 10px rgba(79,172,254,0.8),
+               0 0 20px rgba(79,172,254,0.4);
+
+  animation: labelPulse 2.5s ease-in-out infinite;
+}
+
 </style>
 </head>
 
@@ -433,11 +456,14 @@ h1 {
     </div>
 
   </div>
-</div>
+<div class="generate-wrap">
 
-<div class="generate-label">Generate PFP!</div>
-<div class="generate-btn" onclick="generatePFP()">
-  <div id="loadingFill">Generate 😎</div>
+  <div class="generate-label">Generate PFP!</div>
+
+  <div class="generate-btn" onclick="generatePFP()">
+    <div class="loading-fill" id="loadingFill">Generate PFP 😎</div>
+  </div>
+
 </div>
 
 <div class="ticker">
