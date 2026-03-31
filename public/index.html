@@ -281,6 +281,59 @@ h1 {
   background: rgba(255,255,255,0.2);
 }
 
+/* BUTTON GLOW */
+.generate-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 180px;
+  height: 55px;
+  border-radius: 30px;
+  background: black;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* glow pulse */
+.generate-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  box-shadow: 0 0 25px rgba(79,172,254,0.6);
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.generate-btn.loading::after {
+  opacity: 1;
+}
+
+/* TEXT FADE */
+.loading-fill {
+  transition: opacity 0.5s ease;
+}
+
+/* FLOATING EMOJIS */
+.float-emoji {
+  position: absolute;
+  font-size: 20px;
+  animation: floatUp 2s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.4);
+    opacity: 0;
+  }
+}
+
 </style>
 </head>
 
@@ -465,39 +518,40 @@ const bar = document.getElementById("loadingFill");
 
 /* 🔄 WORD CYCLER (NOW WORKS DURING LOADING) */
 setInterval(()=>{
-  const el = bar;
+  if (!bar || isLoading) return;
 
-  el.style.opacity = 0;
+  bar.style.opacity = 0;
 
   setTimeout(()=>{
-    if(isLoading){
-      // 🔥 cycle words WHILE loading
-      el.innerText = chillWords[index];
-      index = (index + 1) % chillWords.length;
-    } else {
-      // default button text
-      el.innerText = "Generate PFP 😎";
-    }
+    bar.innerText = chillWords[index];
+    bar.style.opacity = 1;
+    index = (index + 1) % chillWords.length;
+  },500); // smoother fade timing
 
-    el.style.opacity = 1;
-  },400);
-
-},2500);
+},3000);
 
 // GENERATOR
 async function generatePFP() {
   if(isLoading) return;
   isLoading = true;
 
+  const button = document.querySelector(".generate-btn");
   const bar = document.getElementById("loadingFill");
 
-  const traits = randomTraits(); // 👈 ADD THIS
+  button.classList.add("loading");
+
+  // start emoji animation loop
+  const emojiInterval = setInterval(()=>{
+    spawnEmojis(button);
+  },400);
 
   try {
+    const traits = randomTraits();
+
     const res = await fetch("/api/generate", {
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(traits) // 👈 SEND TRAITS
+      body: JSON.stringify(traits)
     });
 
     const data = await res.json();
@@ -517,6 +571,10 @@ async function generatePFP() {
   } catch {
     bar.innerText = "try again 😎";
   }
+
+  // stop animations
+  clearInterval(emojiInterval);
+  button.classList.remove("loading");
 
   setTimeout(()=>{
     isLoading = false;
@@ -678,6 +736,19 @@ async function loadMarketCap() {
 loadMarketCap();
 setInterval(loadMarketCap, 15000);
 
-</script>
+function spawnEmojis(button) {
+  for (let i = 0; i < 6; i++) {
+    const emoji = document.createElement("div");
+    emoji.className = "float-emoji";
+    emoji.innerText = "😎";
+
+    emoji.style.left = Math.random() * 100 + "%";
+    emoji.style.bottom = "10px";
+
+    button.appendChild(emoji);
+
+    setTimeout(()=>emoji.remove(),2000);
+  }
+}
 
 </script>
