@@ -365,20 +365,18 @@ h1 {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 9999; /* 🔥 ensures it's above everything */
+  z-index: 9999;
 }
 
-/* REMOVE right positioning from label */
+/* anchor label directly to button */
 .generate-label {
-  position: relative;
-  z-index: 2; /* above button */
-  margin-bottom: 4px; /* 🔥 tighter spacing */
-  font-size: 14px;
+  position: absolute;
+  bottom: 65px; /* 🔥 controls exact distance from button */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
   opacity: 0.85;
-  text-align: center;
+  white-space: nowrap;
 
   text-shadow: 0 0 10px rgba(79,172,254,0.8),
                0 0 20px rgba(79,172,254,0.4);
@@ -386,9 +384,15 @@ h1 {
   animation: labelPulse 2.5s ease-in-out infinite;
 }
 
+/* button stays normal */
 .generate-btn {
-  position: relative;
-  z-index: 1;
+  width: 180px;
+  height: 55px;
+  border-radius: 30px;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* DOT ANIMATION */
