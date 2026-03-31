@@ -361,22 +361,23 @@ h1 {
   }
 }
 
+/* wrapper stays bottom right */
 .generate-wrap {
   position: fixed;
   bottom: 30px;
   right: 30px;
+  width: 180px; /* 🔥 SAME AS BUTTON WIDTH */
   z-index: 9999;
 }
 
-/* anchor label directly to button */
+/* label now centers perfectly over button */
 .generate-label {
   position: absolute;
-  bottom: 65px; /* 🔥 controls exact distance from button */
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 65px;
+  width: 100%;            /* 🔥 match wrapper width */
+  text-align: center;     /* 🔥 true center */
   font-size: 13px;
   opacity: 0.85;
-  white-space: nowrap;
 
   text-shadow: 0 0 10px rgba(79,172,254,0.8),
                0 0 20px rgba(79,172,254,0.4);
