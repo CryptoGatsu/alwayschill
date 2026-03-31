@@ -334,6 +334,33 @@ h1 {
   }
 }
 
+.generate-label {
+  position: fixed;
+  bottom: 95px; /* sits above button */
+  right: 30px;
+  font-size: 14px;
+  opacity: 0.85;
+  color: white;
+  pointer-events: none;
+
+  /* glow */
+  text-shadow: 0 0 10px rgba(79,172,254,0.8),
+               0 0 20px rgba(79,172,254,0.4);
+
+  animation: labelPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes labelPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
 </style>
 </head>
 
@@ -408,6 +435,7 @@ h1 {
   </div>
 </div>
 
+<div class="generate-label">Generate PFP!</div>
 <div class="generate-btn" onclick="generatePFP()">
   <div id="loadingFill">Generate 😎</div>
 </div>
