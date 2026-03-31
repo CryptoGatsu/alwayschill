@@ -375,7 +375,7 @@ h1 {
 .generate-label {
   position: relative;
   z-index: 2; /* above button */
-  margin-bottom: 8px;
+  margin-bottom: 4px; /* 🔥 tighter spacing */
   font-size: 14px;
   opacity: 0.85;
   text-align: center;
@@ -389,6 +389,19 @@ h1 {
 .generate-btn {
   position: relative;
   z-index: 1;
+}
+
+/* DOT ANIMATION */
+.dot::after {
+  content: "";
+  animation: dots 1.2s steps(3, end) infinite;
+}
+
+@keyframes dots {
+  0%   { content: ""; }
+  33%  { content: "."; }
+  66%  { content: ".."; }
+  100% { content: "..."; }
 }
 
 </style>
@@ -465,7 +478,7 @@ h1 {
   </div>
 <div class="generate-wrap">
 
-  <div class="generate-label">Generate PFP!</div>
+<div class="generate-label" id="genLabel">Generate PFP!</div>
 
   <div class="generate-btn" onclick="generatePFP()">
     <div class="loading-fill" id="loadingFill">Generate PFP 😎</div>
@@ -596,15 +609,12 @@ async function generatePFP() {
   if(isLoading) return;
   isLoading = true;
 
-  const button = document.querySelector(".generate-btn");
-  const bar = document.getElementById("loadingFill");
+  const label = document.getElementById("genLabel");
+  const button = document.querySelector(".generate-wrap");
 
+  // 🔥 switch to cooking state
+  label.innerHTML = 'Cooking<span class="dot"></span>';
   button.classList.add("loading");
-
-  // start emoji animation loop
-  const emojiInterval = setInterval(()=>{
-    spawnEmojis(button);
-  },400);
 
   try {
     const traits = randomTraits();
@@ -630,16 +640,14 @@ async function generatePFP() {
     popup.style.display="block";
 
   } catch {
-    bar.innerText = "try again 😎";
+    label.innerText = "Error 😎";
   }
 
-  // stop animations
-  clearInterval(emojiInterval);
-  button.classList.remove("loading");
-
+  // 🔥 reset back
   setTimeout(()=>{
+    label.innerText = "Generate PFP!";
+    button.classList.remove("loading");
     isLoading = false;
-    bar.innerText = "Generate PFP 😎";
   },1000);
 }
 
