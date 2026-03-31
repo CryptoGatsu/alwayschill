@@ -57,7 +57,36 @@ body {
   opacity: 0.8;
 }
 
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  opacity: 0.85;
+}
+
 .nav-right a:hover { opacity: 1; }
+
+#marketCap {
+  transition: 0.3s;
+}
+
+/* pulse effect */
+.mc-update {
+  transform: scale(1.15);
+}
+
+/* green glow */
+.mc-up {
+  color: #00ffae;
+  text-shadow: 0 0 10px rgba(0,255,174,0.7);
+}
+
+/* red glow */
+.mc-down {
+  color: #ff4d4d;
+  text-shadow: 0 0 10px rgba(255,77,77,0.7);
+}
 
 /* HERO */
 .hero {
@@ -258,12 +287,24 @@ h1 {
 <body>
 
 <div class="navbar">
-  <div>😎 CHILL</div>
-  <div class="nav-right">
-    <a href="#">About</a>
-    <a href="#">Buy</a>
-    <a href="https://x.com/i/communities/2038577284320489664" target="_blank">XCOM</a>
+
+  <div class="nav-left">😎 CHILL</div>
+
+  <div class="nav-center">
+    <span id="marketCap">MC: Loading...</span>
   </div>
+
+  <div class="nav-right">
+    <!-- 🔥 UPDATE THIS LINK -->
+    <a href="https://dexscreener.com/solana/6etmzsg21vr5hyretw2d4ipdkx1xg9b4pflq2r4plkxd" target="_blank">
+      Chart
+    </a>
+
+    <a href="https://x.com/i/communities/2038577284320489664" target="_blank">
+      XCOM
+    </a>
+  </div>
+
 </div>
 
 <div class="hero">
@@ -583,5 +624,60 @@ function randomTraits() {
   lastTraits = traits;
   return traits;
 }
+
+let lastMC = null;
+
+// format numbers (VERY IMPORTANT - you were missing this)
+function formatNumber(num) {
+  if (num >= 1e9) return (num / 1e9).toFixed(2) + "B";
+  if (num >= 1e6) return (num / 1e6).toFixed(2) + "M";
+  if (num >= 1e3) return (num / 1e3).toFixed(2) + "K";
+  return num;
+}
+
+async function loadMarketCap() {
+  try {
+    const res = await fetch("https://api.dexscreener.com/latest/dex/pairs/solana/6etmzsg21vr5hyretw2d4ipdkx1xg9b4pflq2r4plkxd");
+    const data = await res.json();
+
+    const mc = data?.pair?.fdv;
+    const el = document.getElementById("marketCap");
+
+    if (!mc || !el) return;
+
+    const formatted = formatNumber(mc);
+    el.innerText = `MC: $${formatted}`;
+
+    // animation trigger
+    el.classList.add("mc-update");
+
+    // direction coloring
+    if (lastMC !== null) {
+      if (mc > lastMC) {
+        el.classList.add("mc-up");
+        el.classList.remove("mc-down");
+      } else if (mc < lastMC) {
+        el.classList.add("mc-down");
+        el.classList.remove("mc-up");
+      }
+    }
+
+    // reset animation
+    setTimeout(() => {
+      el.classList.remove("mc-update");
+    }, 300);
+
+    lastMC = mc;
+
+  } catch {
+    document.getElementById("marketCap").innerText = "MC: 😎";
+  }
+}
+
+// 🔥 THIS WAS MISSING
+loadMarketCap();
+setInterval(loadMarketCap, 15000);
+
+</script>
 
 </script>
